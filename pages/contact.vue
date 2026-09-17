@@ -7,8 +7,8 @@
 
       <div class="mx-auto flex min-h-[360px] max-w-6xl items-end px-4 pb-6 md:min-h-[460px] md:px-8 md:pb-8">
         <div class="contact-hero__content">
-          <h1>Visit us</h1>
-          <p>Experience modern Physiotherapy focused on precision, comfort, and long-lasting results.</p>
+          <h1>{{ $t('contact.visit') }}</h1>
+          <p>{{ $t('contact.subtitle') }}</p>
         </div>
       </div>
     </section>
@@ -38,9 +38,9 @@
 
     <section class="contact-socials pb-12 md:pb-14">
       <div class="mx-auto flex max-w-6xl flex-wrap justify-center gap-3 px-4 md:px-8">
-        <a v-for="social in socials" :key="social.label" href="#" class="social-pill" :aria-label="social.label">
+        <a v-for="social in socials" :key="social.key" href="#" class="social-pill" :aria-label="$t(`contact.socials.${social.key}`)">
           <component :is="social.icon" class="social-pill__icon" aria-hidden="true" />
-          <span>{{ social.label }}</span>
+          <span>{{ $t(`contact.socials.${social.key}`) }}</span>
         </a>
       </div>
     </section>
@@ -61,21 +61,25 @@ import {
   IconPhone
 } from '@tabler/icons-vue'
 import heroImage from '../assets/img/photo.png'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const infoItems = [
-  { label: 'ADDRESS', value: 'Saudi Arabia', icon: IconMapPin },
-  { label: 'PHONE NUMBER', value: '(415) 857-01230', icon: IconPhone },
-  { label: 'EMAIL', value: 'Mobdaoon@clinic.com', icon: IconMail },
-  { label: 'HOURS', value: 'Mon, Tue, Fri — 8 am—5 pm', icon: IconClock }
-]
+const { t } = useI18n()
+
+const infoItems = computed(() => [
+  { label: t('contact.labels.address'), value: t('contact.info.address'), icon: IconMapPin },
+  { label: t('contact.labels.phone'), value: t('contact.info.phone'), icon: IconPhone },
+  { label: t('contact.labels.email'), value: t('contact.info.email'), icon: IconMail },
+  { label: t('contact.labels.hours'), value: t('contact.info.hours'), icon: IconClock }
+])
 
 const socials = [
-  { label: 'Instagram', icon: IconBrandInstagram },
-  { label: 'Telegram', icon: IconBrandTelegram },
-  { label: 'Snapchat', icon: IconBrandSnapchat },
-  { label: 'Tiktok', icon: IconBrandTiktok },
-  { label: 'Facebook', icon: IconBrandFacebook },
-  { label: 'Linkedin', icon: IconBrandLinkedin }
+  { key: 'instagram', icon: IconBrandInstagram },
+  { key: 'telegram', icon: IconBrandTelegram },
+  { key: 'snapchat', icon: IconBrandSnapchat },
+  { key: 'tiktok', icon: IconBrandTiktok },
+  { key: 'facebook', icon: IconBrandFacebook },
+  { key: 'linkedin', icon: IconBrandLinkedin }
 ]
 </script>
 

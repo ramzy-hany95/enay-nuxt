@@ -7,25 +7,19 @@
 
       <div class="mx-auto flex min-h-[360px] max-w-6xl items-end px-4 pb-6 md:min-h-[460px] md:px-8 md:pb-8">
         <div class="about-hero__content">
-          <h1>About us</h1>
-          <p>
-            Welcome to Mobdaoon Physiotherapy Clinic, where advanced clinical expertise meets a deeply personalized
-            approach to movement and recovery.
-          </p>
+          <h1>{{ $t('about.title') }}</h1>
+          <p>{{ description }}</p>
         </div>
       </div>
     </section>
 
     <section class="about-story py-16 md:py-24">
       <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-[1fr_1fr] lg:items-center">
-        <img :src="storyImage" alt="Physiotherapy support"  />
+        <img :src="storyImage" :alt="$t('about.images.story')"  />
 
         <div class="about-copy">
-          <h2>Our Philosophy</h2>
-          <p>
-            We believe in structured care, evidence-based rehabilitation, and treatment plans tailored to the patient.
-            Our goal is to restore strength, mobility, and confidence through precise and compassionate support.
-          </p>
+          <h2>{{ philosophyTitle }}</h2>
+          <p>{{ philosophyText }}</p>
         </div>
       </div>
     </section>
@@ -33,7 +27,7 @@
     <section class="about-choose py-10 md:py-16">
       <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
         <div class="about-reasons">
-          <h2>Why Choose Mobdaoon clinic</h2>
+          <h2>{{ $t('about.whyTitle') }}</h2>
 
           <div class="reason-item" v-for="reason in reasons" :key="reason.number">
             <span class="reason-item__number">{{ reason.number }}</span>
@@ -46,40 +40,87 @@
 
         <div class="about-gallery">
           <div class="about-gallery__top">
-            <img :src="galleryTopLeft" alt="Athlete starting position" />
-            <img :src="galleryTopRight" alt="Athlete starting position" />
+            <img :src="galleryTopLeft" :alt="$t('about.images.galleryTopLeft')" />
+            <img :src="galleryTopRight" :alt="$t('about.images.galleryTopRight')" />
           </div>
-          <img :src="galleryBottom" alt="Treatment support" class="about-gallery__bottom" />
+          <img :src="galleryBottom" :alt="$t('about.images.galleryBottom')" class="about-gallery__bottom" />
         </div>
       </div>
     </section>
   </div>
 </template>
 
-<script setup>
-import heroImage from '../assets/img/photo.png'
-import storyImage from '../assets/img/Container.png'
-import galleryTopLeft from '../assets/img/Image.png'
-import galleryTopRight from '../assets/img/Image1.png'
-import galleryBottom from '../assets/img/WithFallback.png'
+<script setup lang="ts">
+import heroImageStatic from '../assets/img/photo.png'
+import storyImageStatic from '../assets/img/Container.png'
+import galleryTopLeftStatic from '../assets/img/Image.png'
+import galleryTopRightStatic from '../assets/img/Image1.png'
+import galleryBottomStatic from '../assets/img/WithFallback.png'
 
-const reasons = [
-  {
-    number: '01',
-    title: 'Evidence-Based, Personalized Care',
-    text: 'Every rehabilitation plan is custom-built around your specific body mechanics, lifestyle, and recovery goals.'
-  },
-  {
-    number: '02',
-    title: 'Highly Skilled Specialists',
-    text: 'Our dedicated team brings advanced expertise across physical therapy disciplines for precise care at every stage.'
-  },
-  {
-    number: '03',
-    title: 'Advanced Recovery Methods',
-    text: 'We combine modern techniques and clinical insight to support efficient, comfortable, and lasting outcomes.'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRuntimeConfig, useAsyncData } from '#imports'
+import { getWebsiteAbout } from '~/services/apout'
+
+const { t } = useI18n()
+
+// Fetch about content server-side to avoid CORS and use API-provided text/images when available
+const { data: aboutData } = await useAsyncData('websiteAbout', () => getWebsiteAbout(), { server: true })
+const apiBase = useRuntimeConfig().public.apiBaseUrl.replace(/\/$/, '')
+
+const heroImage = computed(() => {
+  const path = aboutData.value?.data?.section_one_images?.[0]
+  return path ? `${apiBase}/${path}` : heroImageStatic
+})
+
+const storyImage = computed(() => {
+  const path = aboutData.value?.data?.section_two_image_one
+  return path ? `${apiBase}/${path}` : storyImageStatic
+})
+
+const galleryTopLeft = computed(() => {
+  const path = aboutData.value?.data?.section_two_image_two
+  return path ? `${apiBase}/${path}` : galleryTopLeftStatic
+})
+
+const galleryTopRight = computed(() => {
+  const path = aboutData.value?.data?.section_two_image_three
+  return path ? `${apiBase}/${path}` : galleryTopRightStatic
+})
+
+const galleryBottom = computed(() => {
+  const path = aboutData.value?.data?.section_one_images?.[0]
+  return path ? `${apiBase}/${path}` : galleryBottomStatic
+})
+
+const description = computed(() => aboutData.value?.data?.description || t('about.lead'))
+
+const philosophyTitle = computed(() => aboutData.value?.data?.section_one_title || t('about.philosophyTitle'))
+const philosophyText = computed(() => aboutData.value?.data?.section_one_description || t('about.philosophyText'))
+
+const reasons = computed(() => {
+  if (aboutData.value?.data) {
+    const s1 = aboutData.value.data.section_two_description_one || ''
+    const s2 = aboutData.value.data.section_two_description_two || ''
+    const s3 = aboutData.value.data.section_two_description_three || ''
+    const def = t('about.reasons') as any
+    const parse = (s: string, fallback: any) => {
+      const lines = s.split(/\r?\n/).filter(Boolean)
+      return {
+        number: fallback?.number || '',
+        title: lines[0] || fallback?.title || '',
+        text: lines.slice(1).join('\n') || fallback?.text || ''
+      }
+    }
+
+    return [
+      parse(s1, def?.[0] || { number: '01', title: '', text: '' }),
+      parse(s2, def?.[1] || { number: '02', title: '', text: '' }),
+      parse(s3, def?.[2] || { number: '03', title: '', text: '' })
+    ]
   }
-]
+  return t('about.reasons')
+})
 </script>
 
 <style scoped>

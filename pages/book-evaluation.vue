@@ -4,13 +4,13 @@
       <div class="booking-card">
         <img :src="logoImage" alt="Mobdaoon logo" class="booking-logo" />
 
-        <h1>Book Evaluation</h1>
-        <p class="booking-subtitle">Submit details about your case for a professional evaluation by our specialists.</p>
+        <h1>{{ $t('booking.title') }}</h1>
+        <p class="booking-subtitle">{{ $t('booking.subtitle') }}</p>
 
         <form class="booking-form" @submit.prevent="submitBooking">
           <div class="booking-grid booking-grid--two">
-            <input v-model="form.firstName" type="text" placeholder="First Name" required />
-            <input v-model="form.lastName" type="text" placeholder="Last Name" required />
+            <input v-model="form.firstName" type="text" :placeholder="$t('booking.form.firstName')" required />
+            <input v-model="form.lastName" type="text" :placeholder="$t('booking.form.lastName')" required />
           </div>
 
           <div class="booking-grid booking-grid--phone">
@@ -19,18 +19,18 @@
               <option value="+966">+966</option>
               <option value="+971">+971</option>
             </select>
-            <input v-model="form.phone" type="tel" placeholder="Phone Number" required />
+            <input v-model="form.phone" type="tel" :placeholder="$t('booking.form.phone')" required />
           </div>
 
           <div class="date-field-wrap">
             <input v-model="form.date" type="date" required />
           </div>
 
-          <textarea v-model="form.message" rows="5" placeholder="Message"></textarea>
+          <textarea v-model="form.message" rows="5" :placeholder="$t('booking.form.message')"></textarea>
 
           <div class="booking-actions">
-            <NuxtLink to="/" class="btn btn--ghost">BACK</NuxtLink>
-            <button type="submit" class="btn btn--primary">BOOK EVALUATION</button>
+            <NuxtLink to="/" class="btn btn--ghost">{{ $t('common.back') }}</NuxtLink>
+            <button type="submit" class="btn btn--primary">{{ $t('booking.form.submit') }}</button>
           </div>
         </form>
       </div>
@@ -46,15 +46,12 @@
           {{ formattedDate }}
         </p>
 
-        <h2>Evaluation Booking Confirmed</h2>
-        <p class="success-text">
-          Your evaluation is booked. A member of our support team will contact you within 24 hours to confirm a time
-          that works best for you.
-        </p>
+        <h2>{{ $t('booking.success.title') }}</h2>
+        <p class="success-text">{{ $t('booking.success.text') }}</p>
 
         <div class="success-actions">
-          <button type="button" class="success-secondary-btn" @click="closePopup">CLOSE</button>
-          <NuxtLink to="/" class="success-home-btn">RETURN HOME</NuxtLink>
+          <button type="button" class="success-secondary-btn" @click="closePopup">{{ $t('booking.success.close') }}</button>
+          <NuxtLink to="/" class="success-home-btn">{{ $t('booking.success.returnHome') }}</NuxtLink>
         </div>
       </div>
     </section>
@@ -63,6 +60,9 @@
 
 <script setup lang="ts">
 import logoImage from '../assets/css/logo.png'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const isSubmitted = ref(false)
 const form = ref({
@@ -78,7 +78,7 @@ const formattedDate = computed(() => {
   const value = form.value.date
 
   if (!value) {
-    return 'Date not selected'
+    return t('booking.form.dateNotSelected')
   }
 
   const parsed = new Date(value)

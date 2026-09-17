@@ -2,8 +2,8 @@
   <div class="auth-page">
     <div class="auth-card">
       <img src="/assets/css/logo.png" alt="logo" class="logo" />
-      <h1 class="title">WELCOME BACK</h1>
-      <p class="subtitle">Create your account to start your wellness journey</p>
+      <h1 class="title">{{ $t('auth.login.title') }}</h1>
+      <p class="subtitle">{{ $t('auth.login.subtitle') }}</p>
 
       <form @submit.prevent="onSubmit" class="form">
         <div class="phone-row">
@@ -12,32 +12,35 @@
             <option value="+966">+966</option>
             <option value="+1">+1</option>
           </select>
-          <input v-model="phone" type="tel" class="phone-input" placeholder="Phone Number" required />
+          <input v-model="phone" type="tel" class="phone-input" :placeholder="$t('auth.login.phonePlaceholder')" required />
         </div>
 
         <div class="password-row">
-          <input :type="show ? 'text' : 'password'" v-model="password" class="password-input" placeholder="Password" required />
-          <button type="button" class="eye-btn" @click="toggleShow" aria-label="toggle password">
+          <input :type="show ? 'text' : 'password'" v-model="password" class="password-input" :placeholder="$t('auth.login.passwordPlaceholder')" required />
+          <button type="button" class="eye-btn" @click="toggleShow" :aria-label="$t('auth.login.togglePassword')">
             <IconEye v-if="show" />
             <IconEyeOff v-else />
           </button>
         </div>
 
-        <NuxtLink to="/auth/forgot" class="forgot">Forgot password?</NuxtLink>
+        <NuxtLink to="/auth/forgot" class="forgot">{{ $t('auth.login.forgot') }}</NuxtLink>
 
-        <button type="submit" class="primary-btn">SIGN IN</button>
+        <button type="submit" class="primary-btn">{{ $t('auth.login.signIn') }}</button>
 
-        <p class="signup">Don't have an account? <NuxtLink to="/auth/register">Sign Up</NuxtLink></p>
+        <p class="signup">{{ $t('auth.login.noAccount') }} <NuxtLink to="/auth/register">{{ $t('auth.login.signUp') }}</NuxtLink></p>
       </form>
     </div>
   </div>
 </template>
 
 <script setup>
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { IconEye, IconEyeOff } from '@tabler/icons-vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const country = ref('+20')
 const phone = ref('')
 const password = ref('')

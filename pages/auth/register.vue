@@ -2,13 +2,13 @@
   <div class="auth-page">
     <div class="auth-card">
       <img src="/assets/css/logo.png" alt="logo" class="logo" />
-      <h1 class="title">SIGN UP</h1>
-      <p class="subtitle">Create your account to start your wellness journey</p>
+      <h1 class="title">{{ $t('auth.register.title') }}</h1>
+      <p class="subtitle">{{ $t('auth.register.subtitle') }}</p>
 
       <form @submit.prevent="onSubmit" class="form">
         <div class="name-row">
-          <input v-model="firstName" type="text" class="name-input" placeholder="First Name" required />
-          <input v-model="lastName" type="text" class="name-input" placeholder="Last Name" required />
+          <input v-model="firstName" type="text" class="name-input" :placeholder="$t('auth.register.firstName')" required />
+          <input v-model="lastName" type="text" class="name-input" :placeholder="$t('auth.register.lastName')" required />
         </div>
 
         <div class="phone-row">
@@ -17,24 +17,23 @@
             <option value="+966">+966</option>
             <option value="+1">+1</option>
           </select>
-          <input v-model="phone" type="tel" class="phone-input" placeholder="Phone Number" required />
+          <input v-model="phone" type="tel" class="phone-input" :placeholder="$t('auth.register.phone')" required />
         </div>
 
-        <input v-model="email" type="email" class="full-input" placeholder="Email Address ( optional )" />
+        <input v-model="email" type="email" class="full-input" :placeholder="$t('auth.register.email')" />
 
         <div class="password-row">
-          <input :type="show ? 'text' : 'password'" v-model="password" class="password-input" placeholder="Password" required />
-          <button type="button" class="eye-btn" @click="toggleShow" aria-label="toggle password">
+          <input :type="show ? 'text' : 'password'" v-model="password" class="password-input" :placeholder="$t('auth.register.password')" required />
+          <button type="button" class="eye-btn" @click="toggleShow" :aria-label="$t('auth.login.togglePassword')">
             <IconEye v-if="show" />
             <IconEyeOff v-else />
           </button>
         </div>
+        <label class="terms"><input type="checkbox" v-model="agree" /> {{ $t('auth.register.terms') }}</label>
 
-        <label class="terms"><input type="checkbox" v-model="agree" /> I agree to the Terms &amp; Conditions</label>
+        <button type="submit" class="primary-btn" :disabled="!agree">{{ $t('auth.register.signUp') }}</button>
 
-        <button type="submit" class="primary-btn" :disabled="!agree">SIGN UP</button>
-
-        <p class="muted">Already have an account? <NuxtLink to="/auth/login">Log in</NuxtLink></p>
+        <p class="muted">{{ $t('auth.register.haveAccount') }} <NuxtLink to="/auth/login">{{ $t('auth.register.logIn') }}</NuxtLink></p>
       </form>
     </div>
   </div>
@@ -44,6 +43,9 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { IconEye, IconEyeOff } from '@tabler/icons-vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const firstName = ref('')
 const lastName = ref('')

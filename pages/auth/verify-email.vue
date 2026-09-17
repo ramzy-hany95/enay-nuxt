@@ -2,27 +2,31 @@
   <div class="auth-page">
     <div class="auth-card">
       <img src="/assets/css/logo.png" alt="logo" class="logo" />
-      <h1 class="title">VERIFY YOUR EMAIL</h1>
-      <p class="subtitle">We sent the verification email<br/>to {{ maskedEmail }}</p>
+      <h1 class="title">{{ $t('auth.verify.title') }}</h1>
+      <p class="subtitle" v-html="$t('auth.verify.subtitle', { email: maskedEmail }).replace('\n','<br/>')"></p>
 
       <div class="code-row">
         <input v-for="(c, i) in codes" :key="i" ref="inputs" v-model="codes[i]" maxlength="1" class="code-input"
                @input="onInput($event, i)" @keydown="onKeydown($event, i)" @paste="onPaste($event)" />
       </div>
 
-      <button class="primary-btn" :disabled="!isComplete" @click="onVerify">VERIFY EMAIL</button>
+      <button class="primary-btn" :disabled="!isComplete" @click="onVerify">{{ $t('auth.verify.verifyBtn') }}</button>
 
-      <p class="muted">Didn't Receive the code? <button class="resend" @click="onResend">Resend</button></p>
+      <p class="muted">{{ $t('auth.verify.didntReceive') }} <button class="resend" @click="onResend">{{ $t('auth.verify.resend') }}</button></p>
     </div>
   </div>
 </template>
 
 <script setup>
+
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const router = useRouter()
+
+const { t } = useI18n()
 
 // try get email from query, fallback to placeholder
 const email = route.query.email || 's****************@gmail.com'

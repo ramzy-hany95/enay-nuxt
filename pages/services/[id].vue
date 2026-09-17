@@ -4,21 +4,21 @@
       <div class="service-details__hero-image" :style="{ backgroundImage: `url(${service.imageUrl})` }"></div>
       <div class="service-details__hero-fade"></div>
       <div class="mx-auto flex min-h-[300px] max-w-6xl items-end px-4 pb-6 md:min-h-[420px] md:px-8 md:pb-8">
-        <h1>{{ service.title }}</h1>
+        <h1>{{ $t(`services.${service.id}.title`) }}</h1>
       </div>
     </section>
 
     <section class="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
       <div class="service-content-block">
-        <h2>Overview</h2>
-        <p v-for="paragraph in service.overview" :key="paragraph">{{ paragraph }}</p>
+        <h2>{{ $t('services.overviewTitle') }}</h2>
+        <p v-for="(paragraph, idx) in $t(`services.${service.id}.overview`)" :key="idx">{{ paragraph }}</p>
       </div>
 
       <div class="service-two-col">
         <div class="service-content-block">
-          <h2>Who is this for</h2>
+          <h2>{{ $t('services.audienceTitle') }}</h2>
           <div class="service-bullets service-bullets--two">
-            <div v-for="item in service.audience" :key="item" class="service-bullet service-bullet--line">
+            <div v-for="(item, idx) in $t(`services.${service.id}.audience`)" :key="idx" class="service-bullet service-bullet--line">
               <span class="service-bullet__icon"></span>
               <span>{{ item }}</span>
             </div>
@@ -27,9 +27,9 @@
       </div>
 
       <div class="service-content-block service-content-block--full-row">
-        <h2>Expected Outcomes</h2>
+        <h2>{{ $t('services.outcomesTitle') }}</h2>
         <div class="service-bullets service-bullets--two">
-          <div v-for="item in service.outcomes" :key="item" class="service-bullet">
+          <div v-for="(item, idx) in $t(`services.${service.id}.outcomes`)" :key="idx" class="service-bullet">
             <span class="service-bullet__dot"></span>
             <span>{{ item }}</span>
           </div>
@@ -39,20 +39,20 @@
       <div class="duration-card">
         <div class="duration-card__label">
           <span class="duration-card__icon"></span>
-          <span>Treatment duration</span>
+          <span>{{ $t('services.durationLabel') }}</span>
         </div>
-        <h3>{{ service.duration }}</h3>
-        <p>{{ service.durationNote }}</p>
+        <h3>{{ $t(`services.${service.id}.duration`) }}</h3>
+        <p>{{ $t(`services.${service.id}.durationNote`) }}</p>
       </div>
     </section>
 
     <section class="faq-section">
       <div class="mx-auto max-w-6xl px-4 py-14 md:px-8 md:py-20">
-        <h2>Frequently Asked Questions</h2>
-        <p class="faq-section__intro">Everything you need to know before your first visit</p>
+        <h2>{{ $t('common.faqTitle') }}</h2>
+        <p class="faq-section__intro">{{ $t('common.faqIntro') }}</p>
 
         <div class="faq-list">
-          <details v-for="(item, index) in faqItems" :key="item.question" class="faq-item" :open="index === 0">
+          <details v-for="(item, index) in $t('services.faqItems')" :key="index" class="faq-item" :open="index === 0">
             <summary>
               <span>{{ item.question }}</span>
               <span class="faq-item__icon"></span>
@@ -65,12 +65,14 @@
   </div>
 
   <div v-else class="mx-auto max-w-4xl px-4 py-16 md:px-8">
-    <h1>Service not found</h1>
-    <NuxtLink to="/services" class="service-back">Return to services</NuxtLink>
+    <h1>{{ $t('services.notFound') }}</h1>
+    <NuxtLink to="/services" class="service-back">{{ $t('services.returnToList') }}</NuxtLink>
   </div>
 </template>
 
+
 <script setup lang="ts">
+import { computed } from 'vue'
 import { serviceItems } from '~/data/services'
 
 const route = useRoute()
@@ -92,33 +94,7 @@ const service = computed(() => {
   }
 })
 
-const faqItems = [
-  {
-    question: 'What should I expect during my initial assessment?',
-    answer:
-      'Your first session focuses on evaluation, symptom analysis, and identifying the right treatment direction for your condition and movement goals.'
-  },
-  {
-    question: 'How will my treatment plan be developed?',
-    answer:
-      'Your plan is built around your assessment findings, daily function, physical capacity, and the specific service pathway most relevant to your recovery.'
-  },
-  {
-    question: 'What types of treatments can I expect?',
-    answer:
-      'Treatment may include manual care, guided exercise, therapeutic technology, functional re-training, or targeted education depending on the service.'
-  },
-  {
-    question: 'How often will I need to attend sessions?',
-    answer:
-      'The number of sessions depends on your condition, goals, and rate of improvement. Your therapist will define this after the first evaluation.'
-  },
-  {
-    question: 'What is the role of home exercises in my recovery?',
-    answer:
-      'Home exercises help carry clinical progress into daily life, improve consistency, and often make your recovery more efficient.'
-  }
-]
+// FAQ items used directly in template via `$t('services.faqItems')`
 </script>
 
 <style scoped>

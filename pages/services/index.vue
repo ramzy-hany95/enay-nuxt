@@ -1,13 +1,9 @@
 <template>
   <div class="services-page">
     <section class="services-hero">
-      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-12 md:px-8 md:py-16 lg:grid-cols-[260px_1fr] lg:items-start">
-        <h1>Our Services</h1>
-        <p>
-          Experience bespoke physical therapy designed to restore function, eliminate pain, and optimize human movement.
-          Our dedicated approach ensures you recover with confidence, reclaim your daily lifestyle, and achieve sustainable,
-          long-term wellness.
-        </p>
+        <div class="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-12 md:px-8 md:py-16 lg:grid-cols-[260px_1fr] lg:items-start">
+        <h1>{{ $t('services.title') }}</h1>
+        <p>{{ $t('services.subtitle') }}</p>
       </div>
     </section>
 
@@ -16,8 +12,8 @@
         <NuxtLink v-for="service in services" :key="service.id" :to="`/services/${service.id}`" class="service-card">
           <img :src="service.imageUrl" :alt="service.title" class="service-card__image" />
           <div class="service-card__body">
-            <h2>{{ service.title }}</h2>
-            <p>{{ service.shortDescription }}</p>
+            <h2>{{ $t(`services.${service.id}.title`) }}</h2>
+            <p>{{ $t(`services.${service.id}.shortDescription`) }}</p>
           </div>
         </NuxtLink>
       </div>
@@ -25,8 +21,8 @@
 
     <section class="faq-section">
       <div class="mx-auto max-w-6xl px-4 py-14 md:px-8 md:py-20">
-        <h2>Frequently Asked Questions</h2>
-        <p class="faq-section__intro">Everything you need to know before your first visit</p>
+          <h2>{{ $t('common.faqTitle') }}</h2>
+        <p class="faq-section__intro">{{ $t('common.faqIntro') }}</p>
 
         <div class="faq-list">
           <details v-for="(item, index) in faqItems" :key="item.question" class="faq-item" :open="index === 0">

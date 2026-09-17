@@ -2,24 +2,22 @@
   <div class="blog-page">
     <section class="blog-hero">
       <div class="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
-        <p class="blog-eyebrow">Insights & Recovery</p>
-        <h1>Our Blog</h1>
-        <p class="blog-intro">
-          Read practical articles on physiotherapy, movement recovery, pain management, and long-term performance.
-        </p>
+        <p class="blog-eyebrow">{{ $t('blog.eyebrow') }}</p>
+        <h1>{{ $t('blog.title') }}</h1>
+        <p class="blog-intro">{{ $t('blog.intro') }}</p>
       </div>
     </section>
 
     <section class="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
       <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         <NuxtLink v-for="post in posts" :key="post.id" :to="`/blogs/${post.id}`" class="blog-card">
-          <img :src="post.imageUrl" :alt="post.title" class="blog-card__image" />
+          <img :src="post.imageUrl" :alt="$t(`blogs.${post.id}.title`)" class="blog-card__image" />
           <div class="blog-card__body">
-            <span class="blog-card__tag">{{ post.category }}</span>
-            <p class="blog-card__date">{{ post.date }}</p>
-            <h2>{{ post.title }}</h2>
-            <p class="blog-card__excerpt">{{ post.excerpt }}</p>
-            <span class="blog-card__link">Read article</span>
+            <span class="blog-card__tag">{{ $t(`blogs.${post.id}.category`) }}</span>
+            <p class="blog-card__date">{{ $t(`blogs.${post.id}.date`) }}</p>
+            <h2>{{ $t(`blogs.${post.id}.title`) }}</h2>
+            <p class="blog-card__excerpt">{{ $t(`blogs.${post.id}.excerpt`) }}</p>
+            <span class="blog-card__link">{{ $t('common.readArticle') }}</span>
           </div>
         </NuxtLink>
       </div>
@@ -27,11 +25,11 @@
 
     <section class="faq-section">
       <div class="mx-auto max-w-6xl px-4 py-14 md:px-8 md:py-20">
-        <h2>Frequently Asked Questions</h2>
-        <p class="faq-section__intro">Everything you need to know before your first visit</p>
+        <h2>{{ $t('common.faqTitle') }}</h2>
+        <p class="faq-section__intro">{{ $t('common.faqIntro') }}</p>
 
-        <div class="faq-list">
-          <details v-for="(item, index) in faqItems" :key="item.question" class="faq-item" :open="index === 0">
+            <div class="faq-list">
+              <details v-for="(item, index) in $t('services.faqItems')" :key="index" class="faq-item" :open="index === 0">
             <summary>
               <span>{{ item.question }}</span>
               <span class="faq-item__icon"></span>
@@ -57,33 +55,7 @@ const posts = blogPosts.map((post) => ({
   imageUrl: imageModules[`/assets/img/${post.image}`] || imageModules['/assets/img/background-paint.png']
 }))
 
-const faqItems = [
-  {
-    question: 'What should I expect during my initial assessment?',
-    answer:
-      'Your first visit includes a full diagnostic session focused on understanding your movement patterns, pain triggers, and recovery goals. You will leave with a clear treatment direction and a tailored care roadmap.'
-  },
-  {
-    question: 'How will my treatment plan be developed?',
-    answer:
-      'Your clinician builds the plan around your assessment findings, lifestyle demands, and current physical capacity, then adjusts it as your progress improves.'
-  },
-  {
-    question: 'What types of treatments can I expect?',
-    answer:
-      'Treatment may include manual therapy, movement re-education, strength work, mobility drills, pain-management strategies, and guided home exercises.'
-  },
-  {
-    question: 'How often will I need to attend sessions?',
-    answer:
-      'Session frequency depends on your condition, recovery phase, and goals. Some patients attend weekly, while others follow a spaced, progression-based schedule.'
-  },
-  {
-    question: 'What is the role of home exercises in my recovery?',
-    answer:
-      'Home exercises help reinforce the work done in clinic, improve consistency between visits, and often accelerate long-term recovery results.'
-  }
-]
+// FAQ items are provided via `$t('services.faqItems')` in the template
 </script>
 
 <style scoped>

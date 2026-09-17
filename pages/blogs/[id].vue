@@ -1,27 +1,27 @@
 <template>
   <div class="blog-details" v-if="post">
     <section class="mx-auto max-w-4xl px-4 py-12 md:px-8 md:py-16">
-      <NuxtLink to="/blogs" class="blog-back">Back to blog</NuxtLink>
+      <NuxtLink to="/blogs" class="blog-back">{{ $t('blog.backToList') }}</NuxtLink>
 
       <div class="blog-meta">
-        <span class="blog-tag">{{ post.category }}</span>
-        <p>{{ post.date }}</p>
+        <span class="blog-tag">{{ $t(`blogs.${post.id}.category`) }}</span>
+        <p>{{ $t(`blogs.${post.id}.date`) }}</p>
       </div>
 
-      <h1>{{ post.title }}</h1>
-      <p class="blog-lead">{{ post.excerpt }}</p>
+      <h1>{{ $t(`blogs.${post.id}.title`) }}</h1>
+      <p class="blog-lead">{{ $t(`blogs.${post.id}.excerpt`) }}</p>
 
-      <img :src="post.imageUrl" :alt="post.title" class="blog-cover" />
+      <img :src="post.imageUrl" :alt="$t(`blogs.${post.id}.title`)" class="blog-cover" />
 
       <div class="blog-content">
-        <p v-for="paragraph in post.content" :key="paragraph">{{ paragraph }}</p>
+        <p v-for="(paragraph, idx) in $t(`blogs.${post.id}.content`)" :key="idx">{{ paragraph }}</p>
       </div>
     </section>
   </div>
 
   <div v-else class="mx-auto max-w-4xl px-4 py-16 md:px-8">
-    <h1>Article not found</h1>
-    <NuxtLink to="/blogs" class="blog-back">Return to blog list</NuxtLink>
+    <h1>{{ $t('blog.notFound') }}</h1>
+    <NuxtLink to="/blogs" class="blog-back">{{ $t('blog.returnToList') }}</NuxtLink>
   </div>
 </template>
 

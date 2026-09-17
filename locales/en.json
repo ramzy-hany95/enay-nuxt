@@ -1,0 +1,305 @@
+{
+  "nav": {
+    "services": "Services",
+    "blogs": "Blogs",
+    "about": "About us",
+    "contact": "Contact",
+    "bookEvaluation": "BOOK EVALUATION",
+    "signIn": "SIGN IN",
+    "signUp": "SIGN UP",
+    "languageLabel": "Language"
+  },
+  "footer": {
+    "cta": "BOOK EVALUATION",
+    "addressTitle": "ADDRESS",
+    "address": "2972 Westheimer Rd. Santa Ana,\nIllinois 85486",
+    "exploreTitle": "EXPLORE",
+    "explore": {
+      "blogs": "Blogs",
+      "services": "Services",
+      "experts": "Experts",
+      "aboutUs": "About us",
+      "contacts": "Contacts"
+    },
+    "contactTitle": "CONTACT US",
+    "contact": {
+      "phone": "+1 891 989-11-91",
+      "email": "help\\@logoipsum.com"
+    },
+    "copyright": "© {year} MyProject. All rights reserved."
+  },
+  "languages": {
+    "en": "English",
+    "ar": "العربية"
+  },
+  "home": {
+    "hero": {
+      "chip": "First in Saudi Arabia",
+      "title": "Creative Care",
+      "subtitle": "Medical care with a creative touch, tailored just for you",
+      "cta": "BOOK EVALUATION"
+    },
+    "tech": {
+      "title": "Technology in service of better care",
+      "text": "We invest in advanced tools not for their own sake, but because they lead to more accurate diagnoses, gentler treatments and better outcomes."
+    },
+    "kingdom": {
+      "title": "Only in the Kingdom of Saudi Arabia",
+      "text": "Our clinic proudly houses the most advanced physiotherapy machine available, one very first and only one of its kind in all of KSA.",
+      "learn": "LEARN ABOUT OUR TECHNOLOGY",
+      "highlight1": "Accelerated healing through smart biomechanical support and reduced strain.",
+      "highlight2": "Enhanced therapeutic precision with real-time guided movement correction."
+    },
+    "articles": {
+      "latest": "Latest Articles",
+      "viewAll": "View all"
+    },
+    "images": {
+      "treatmentRoom": "Modern treatment room",
+      "rehabilitationSystem": "Rehabilitation system"
+    },
+    "contactCta": {
+      "title": "Ready to Start Your Recovery Journey?",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "countryCode": "+20",
+      "phone": "Phone Number",
+      "message": "Message",
+      "submit": "BOOK YOUR FREE EVALUATION"
+    }
+  },
+  "blog": {
+    "eyebrow": "Insights & News",
+    "title": "From Our Blog",
+    "intro": "Stories, guides and clinical insights for better recovery.",
+    "backToList": "Back to blog",
+    "notFound": "Article not found",
+    "returnToList": "Return to blog"
+  },
+  "features": {
+    "cbct": { "title": "CBCT Imaging", "text": "3D views of your teeth, jaw and bone structure to support precise treatment planning." },
+    "ceph": { "title": "Cephalometric Analysis", "text": "Advanced imaging technique providing detailed craniofacial measurements and treatment mapping." },
+    "digital": { "title": "Digital Impressions", "text": "Digital impressions of your teeth for accurate and comfortable custom aligner creation." },
+    "intraoral": { "title": "Intraoral Scanning", "text": "Instant imaging with enhanced resolution and no need for traditional impression trays." },
+    "printing": { "title": "3D Printing", "text": "Computer-guided model and appliance fabrication for consistency, speed, and customization." },
+    "ai": { "title": "AI-Guided Planning", "text": "Data-assisted clinical planning to improve treatment personalization and predictability." }
+  },
+  "common": {
+    "back": "Back",
+    "viewAll": "View all",
+    "readArticle": "Read article",
+    "logoAlt": "MyProject logo",
+    "faqTitle": "Frequently Asked Questions",
+    "faqIntro": "Everything you need to know before your first visit",
+    "actions": {
+      "close": "CLOSE",
+      "returnHome": "RETURN HOME",
+      "bookEvaluation": "BOOK EVALUATION"
+    }
+  },
+  "booking": {
+    "title": "Book Evaluation",
+    "subtitle": "Submit details about your case for a professional evaluation by our specialists.",
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "phone": "Phone Number",
+      "message": "Message",
+      "dateNotSelected": "Date not selected",
+      "submit": "BOOK EVALUATION"
+    },
+    "success": {
+      "title": "Evaluation Booking Confirmed",
+      "text": "Your evaluation is booked. A member of our support team will contact you within 24 hours to confirm a time that works best for you.",
+      "close": "CLOSE",
+      "returnHome": "RETURN HOME"
+    }
+  },
+  "contact": {
+    "visit": "Visit us",
+    "subtitle": "Experience modern Physiotherapy focused on precision, comfort, and long-lasting results.",
+    "info": {
+      "address": "Saudi Arabia",
+      "phone": "(415) 857-01230",
+      "email": "Mobdaoon\\@clinic.com",
+      "hours": "Mon, Tue, Fri — 8 am—5 pm"
+    },
+    "labels": {
+      "address": "ADDRESS",
+      "phone": "PHONE NUMBER",
+      "email": "EMAIL",
+      "hours": "HOURS"
+    },
+    "socials": {
+      "instagram": "Instagram",
+      "telegram": "Telegram",
+      "snapchat": "Snapchat",
+      "tiktok": "Tiktok",
+      "facebook": "Facebook",
+      "linkedin": "Linkedin"
+    }
+  },
+  "blog": {
+    "eyebrow": "Insights & Recovery",
+    "title": "Our Blog",
+    "intro": "Read practical articles on physiotherapy, movement recovery, pain management, and long-term performance.",
+    "notFound": "Article not found",
+    "returnToList": "Return to blog list"
+  },
+  "blogs": {
+    "injury-prevention": {
+      "category": "Injury Prevention",
+      "date": "TUESDAY - JANUARY 24 2026",
+        "images": {
+          "treatmentRoom": "Modern treatment room",
+          "rehabilitationSystem": "Rehabilitation system"
+        },
+      "title": "How Physiotherapy Safely Speeds Up Healing",
+      "excerpt": "A guided rehabilitation plan helps the body heal with less strain, better mobility, and fewer setbacks.",
+      "content": [
+        "Physiotherapy supports recovery by improving circulation, maintaining safe movement, and protecting surrounding tissues during healing.",
+        "With the right progression, patients regain strength and confidence without overloading the injured area too early.",
+        "A structured plan also reduces the risk of long-term stiffness and recurring pain."
+      ]
+    },
+    "mobility-recovery": {
+      "category": "Mobility",
+      "date": "TUESDAY - JANUARY 24 2026",
+      "title": "The Path to Recovery: Evidence-Based Approaches in Modern Physiotherapy",
+      "excerpt": "Modern mobility work combines assessment, manual care, and progressive exercise to restore functional movement.",
+      "content": [
+        "Mobility-focused therapy begins with identifying the real movement restriction, not just the painful symptom.",
+        "Treatment can include guided stretching, neuromuscular re-education, and practical home strategies.",
+        "The result is better movement quality and a stronger return to daily activity."
+      ]
+    },
+    "lasting-relief": {
+      "category": "Strength",
+      "date": "TUESDAY - JANUARY 24 2026",
+      "title": "This Pain Is Temporary: Science-Backed Progressions for Lasting Relief",
+      "excerpt": "Strength-based rehab builds tolerance, restores capacity, and creates durable improvements over time.",
+      "content": [
+        "Pain relief is more reliable when exercises are progressed intentionally instead of randomly increased.",
+        "Targeted strengthening helps patients tolerate daily loads with better control and less fear of movement.",
+        "Over time, this improves performance and reduces the chance of reinjury."
+      ]
+    }
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Experience bespoke physical therapy designed to restore function, eliminate pain, and optimize human movement.",
+    "faqIntro": "Everything you need to know before your first visit",
+    "overviewTitle": "Overview",
+    "audienceTitle": "Who is this for",
+    "outcomesTitle": "Expected Outcomes",
+    "durationLabel": "Treatment duration",
+    "notFound": "Service not found",
+    "returnToList": "Return to services",
+    "faqItems": [
+      {
+        "question": "What should I expect during my initial assessment?",
+        "answer": "Your first session focuses on evaluation, symptom analysis, and identifying the right treatment direction for your condition and movement goals."
+      },
+      {
+        "question": "How will my treatment plan be developed?",
+        "answer": "Your plan is built around your assessment findings, daily function, physical capacity, and the specific service pathway most relevant to your recovery."
+      },
+      {
+        "question": "What types of treatments can I expect?",
+        "answer": "Treatment may include manual care, guided exercise, therapeutic technology, functional re-training, or targeted education depending on the service."
+      },
+      {
+        "question": "How often will I need to attend sessions?",
+        "answer": "The number of sessions depends on your condition, goals, and rate of improvement. Your therapist will define this after the first evaluation."
+      },
+      {
+        "question": "What is the role of home exercises in my recovery?",
+        "answer": "Home exercises help carry clinical progress into daily life, improve consistency, and often make your recovery more efficient."
+      }
+    ],
+    "neuro-rehabilitation-therapy": {
+      "title": "Neuro-rehabilitation therapy",
+      "shortDescription": "Joint pain, arthritis, and musculoskeletal injuries treated with precision care.",
+      "overview": [
+        "Our neuro-rehabilitation programs focus on restoring communication between the nervous system and the body through guided clinical care.",
+        "Treatment blends targeted movement, functional training, and patient-specific progression to improve control and daily performance.",
+        "Each program is adapted to the individual diagnosis, symptom profile, and long-term recovery goals."
+      ],
+      "audience": [
+        "Chronic back and neck pain sufferers",
+        "Individuals with complex regional pain",
+        "Fibromyalgia patients",
+        "Post-COVID fatigue and pain"
+      ],
+      "outcomes": [
+        "Significant reduction in pain levels",
+        "Improved daily function and quality of life",
+        "Reduced medication dependency",
+        "Empowered self-management strategies"
+      ],
+      "duration": "6 - 24 sessions depending on injury severity",
+      "durationNote": "Duration estimates are based on average patient outcomes. Your clinical team will provide an individualized timeline following your initial evaluation."
+    }
+  },
+  "about": {
+    "title": "About us",
+    "lead": "Welcome to Mobdaoon Physiotherapy Clinic, where advanced clinical expertise meets a deeply personalized approach to movement and recovery.",
+    "philosophyTitle": "Our Philosophy",
+    "philosophyText": "We believe in structured care, evidence-based rehabilitation, and treatment plans tailored to the patient. Our goal is to restore strength, mobility, and confidence through precise and compassionate support.",
+    "whyTitle": "Why Choose Mobdaoon clinic",
+    "reasons": [
+      {
+        "number": "01",
+        "title": "Evidence-Based, Personalized Care",
+        "text": "Every rehabilitation plan is custom-built around your specific body mechanics, lifestyle, and recovery goals."
+      },
+      {
+        "number": "02",
+        "title": "Highly Skilled Specialists",
+        "text": "Our dedicated team brings advanced expertise across physical therapy disciplines for precise care at every stage."
+      },
+      {
+        "number": "03",
+        "title": "Advanced Recovery Methods",
+        "text": "We combine modern techniques and clinical insight to support efficient, comfortable, and lasting outcomes."
+      }
+    ]
+  },
+  "auth": {
+    "login": {
+      "title": "WELCOME BACK",
+      "subtitle": "Create your account to start your wellness journey",
+      "phonePlaceholder": "Phone Number",
+      "passwordPlaceholder": "Password",
+      "togglePassword": "Toggle password visibility",
+      "forgot": "Forgot password?",
+      "signIn": "SIGN IN",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up"
+    },
+    "register": {
+      "title": "SIGN UP",
+      "subtitle": "Create your account to start your wellness journey",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "phone": "Phone Number",
+      "email": "Email Address ( optional )",
+      "password": "Password",
+      "terms": "I agree to the Terms & Conditions",
+      "signUp": "SIGN UP",
+      "haveAccount": "Already have an account?",
+      "logIn": "Log in"
+    },
+    "verify": {
+      "title": "VERIFY YOUR EMAIL",
+      "subtitle": "We sent the verification email\nto {email}",
+      "verifyBtn": "VERIFY EMAIL",
+      "resend": "Resend",
+      "didntReceive": "Didn't Receive the code?"
+    }
+  },
+  "api": {
+    "connected": "API connected successfully.",
+    "failed": "API connection failed."
+  }
+}

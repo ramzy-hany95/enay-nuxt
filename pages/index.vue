@@ -6,10 +6,11 @@
       <div class="hero-bottom-fade"></div>
 
       <div class="hero-content mx-auto max-w-6xl px-4 md:px-8">
-        <p class="hero-chip">First in Saudi Arabia</p>
-        <h1 class="hero-title">Creative Care</h1>
-        <p class="hero-subtitle">Medical care with a creative touch, tailored just for you</p>
-        <NuxtLink to="/book-evaluation" class="hero-button">BOOK EVALUATION</NuxtLink>
+        <p class="hero-chip">{{ $t('home.hero.chip') }}</p>
+        <h1 class="hero-title">{{ $t('home.hero.title') }}</h1>
+        <p class="hero-subtitle">{{ $t('home.hero.subtitle') }}</p>
+        <p v-if="apiConnectionMessage" class="hero-api-status">{{ apiConnectionMessage }}</p>
+        <NuxtLink to="/book-evaluation" class="hero-button">{{ $t('home.hero.cta') }}</NuxtLink>
       </div>
     </section>
 
@@ -17,23 +18,20 @@
       <div class="mx-auto max-w-6xl px-4 md:px-8">
         <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.05fr_1fr] lg:items-center">
           <div>
-            <h2 class="section-title mb-6">Technology in service of better care</h2>
-            <p class="section-text max-w-xl">
-              We invest in advanced tools not for their own sake, but because they lead to more accurate diagnoses, gentler
-              treatments and better outcomes.
-            </p>
+            <h2 class="section-title mb-6">{{ $t('home.tech.title') }}</h2>
+            <p class="section-text max-w-xl">{{ $t('home.tech.text') }}</p>
           </div>
 
           <div class="tech-image-wrap">
-            <img :src="imageRoutes.tech" alt="Modern treatment room"  />
+            <img :src="imageRoutes.tech" :alt="$t('home.images.treatmentRoom')"  />
           </div>
         </div>
 
         <div class="feature-grid mt-12">
           <article class="feature-item" v-for="feature in features" :key="feature.title">
             <component :is="feature.icon" class="feature-icon" aria-hidden="true" />
-            <h3>{{ feature.title }}</h3>
-            <p>{{ feature.text }}</p>
+            <h3>{{ $t(feature.title) }}</h3>
+            <p>{{ $t(feature.text) }}</p>
           </article>
         </div>
       </div>
@@ -41,27 +39,24 @@
 
     <section class="kingdom-section py-20 md:py-24">
       <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-2 lg:items-center">
-        <img :src="imageRoutes.kingdom" alt="Rehabilitation system" class="rounded-[18px] shadow-[0_24px_55px_rgba(0,0,0,0.45)]" />
+        <img :src="imageRoutes.kingdom" :alt="$t('home.images.rehabilitationSystem')" class="rounded-[18px] shadow-[0_24px_55px_rgba(0,0,0,0.45)]" />
 
         <div>
-          <h2 class="section-title mb-6">Only in the Kingdom of Saudi Arabia</h2>
-          <p class="section-text mb-7">
-            Our clinic proudly houses the most advanced physiotherapy machine available, one very first and only one of
-            its kind in all of KSA.
-          </p>
+          <h2 class="section-title mb-6">{{ $t('home.kingdom.title') }}</h2>
+          <p class="section-text mb-7">{{ $t('home.kingdom.text') }}</p>
 
           <ul class="highlight-list mb-8">
             <li>
               <IconBolt class="highlight-icon" aria-hidden="true" />
-              <span>Accelerated healing through smart biomechanical support and reduced strain.</span>
+              <span>{{ $t('home.kingdom.highlight1') }}</span>
             </li>
             <li>
               <IconTargetArrow class="highlight-icon" aria-hidden="true" />
-              <span>Enhanced therapeutic precision with real-time guided movement correction.</span>
+              <span>{{ $t('home.kingdom.highlight2') }}</span>
             </li>
           </ul>
 
-          <NuxtLink to="/services" class="hero-button">LEARN ABOUT OUR TECHNOLOGY</NuxtLink>
+          <NuxtLink to="/services" class="hero-button">{{ $t('home.kingdom.learn') }}</NuxtLink>
         </div>
       </div>
     </section>
@@ -69,27 +64,27 @@
     <section class="articles-section py-20 md:py-24">
       <div class="mx-auto max-w-6xl px-4 md:px-8">
         <div class="mb-8 flex items-end justify-between">
-          <h2 class="section-title">Latest Articles</h2>
-          <NuxtLink to="/blogs" class="view-all">View all</NuxtLink>
+          <h2 class="section-title">{{ $t('home.articles.latest') }}</h2>
+          <NuxtLink to="/blogs" class="view-all">{{ $t('home.articles.viewAll') }}</NuxtLink>
         </div>
 
         <div class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
           <article class="article-card article-card-large">
-            <img :src="imageRoutes.articleMain" alt="Injury prevention" />
-            <span class="article-tag article-tag-floating">Injury Prevention</span>
+            <img :src="imageRoutes.articleMain" :alt="$t('blogs.injury-prevention.title')" />
+            <span class="article-tag article-tag-floating">{{ $t('blogs.injury-prevention.category') }}</span>
             <div class="article-overlay">
-              <p class="article-date">TUESDAY - JANUARY 24 2026</p>
-              <h3>How Physiotherapy Safely Speeds Up Healing</h3>
+              <p class="article-date">{{ $t('blogs.injury-prevention.date') }}</p>
+              <h3>{{ $t('blogs.injury-prevention.title') }}</h3>
             </div>
           </article>
 
           <div class="space-y-5">
-            <article class="article-mini" v-for="post in sidePosts" :key="post.title">
-              <img :src="post.image" :alt="post.tag" />
+            <article class="article-mini" v-for="post in sidePosts" :key="post.id">
+              <img :src="post.image" :alt="$t(`blogs.${post.id}.title`)" />
               <div>
-                <span class="article-tag">{{ post.tag }}</span>
-                <p class="article-date">TUESDAY - JANUARY 24 2026</p>
-                <h3>{{ post.title }}</h3>
+                <span class="article-tag">{{ $t(`blogs.${post.id}.category`) }}</span>
+                <p class="article-date">{{ $t(`blogs.${post.id}.date`) }}</p>
+                <h3>{{ $t(`blogs.${post.id}.title`) }}</h3>
               </div>
             </article>
           </div>
@@ -102,17 +97,17 @@
       <div class="cta-overlay"></div>
       <div class="flex w-full justify-end px-4 md:px-8 lg:px-12">
         <form class="cta-form" @submit.prevent>
-          <h3 class="py-3">Ready to Start Your Recovery Journey?</h3>
+          <h3 class="py-3">{{ $t('home.contactCta.title') }}</h3>
           <div class="grid gap-4 md:grid-cols-2">
-            <input type="text" placeholder="First Name" />
-            <input type="text" placeholder="Last Name" />
+            <input type="text" :placeholder="$t('home.contactCta.firstName')" />
+            <input type="text" :placeholder="$t('home.contactCta.lastName')" />
           </div>
           <div class="mt-3 grid gap-4 md:grid-cols-[90px_1fr]">
-            <input type="text" placeholder="+20" />
-            <input type="tel" placeholder="Phone Number" />
+            <input type="text" :placeholder="$t('home.contactCta.countryCode')" />
+            <input type="tel" :placeholder="$t('home.contactCta.phone')" />
           </div>
-          <textarea rows="4" placeholder="Message"></textarea>
-          <button type="submit">BOOK YOUR FREE EVALUATION</button>
+          <textarea rows="4" :placeholder="$t('home.contactCta.message')"></textarea>
+          <button type="submit">{{ $t('home.contactCta.submit') }}</button>
         </form>
       </div>
     </section>
@@ -138,6 +133,12 @@ import {
   IconScanEye,
   IconTargetArrow
 } from '@tabler/icons-vue'
+import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+const api = useApi()
+const apiConnectionMessage = ref('')
 
 const imageRoutes = {
   hero: heroImg,
@@ -150,50 +151,33 @@ const imageRoutes = {
 }
 
 const features = [
-  {
-    title: 'CBCT Imaging',
-    text: '3D views of your teeth, jaw and bone structure to support precise treatment planning.',
-    icon: IconScanEye
-  },
-  {
-    title: 'Cephalometric Analysis',
-    text: 'Advanced imaging technique providing detailed craniofacial measurements and treatment mapping.',
-    icon: IconRulerMeasure
-  },
-  {
-    title: 'Digital Impressions',
-    text: 'Digital impressions of your teeth for accurate and comfortable custom aligner creation.',
-    icon: IconFingerprintScan
-  },
-  {
-    title: 'Intraoral Scanning',
-    text: 'Instant imaging with enhanced resolution and no need for traditional impression trays.',
-    icon: IconScan
-  },
-  {
-    title: '3D Printing',
-    text: 'Computer-guided model and appliance fabrication for consistency, speed, and customization.',
-    icon: IconPrinter
-  },
-  {
-    title: 'AI-Guided Planning',
-    text: 'Data-assisted clinical planning to improve treatment personalization and predictability.',
-    icon: IconBrain
-  }
+  { title: 'features.cbct.title', text: 'features.cbct.text', icon: IconScanEye },
+  { title: 'features.ceph.title', text: 'features.ceph.text', icon: IconRulerMeasure },
+  { title: 'features.digital.title', text: 'features.digital.text', icon: IconFingerprintScan },
+  { title: 'features.intraoral.title', text: 'features.intraoral.text', icon: IconScan },
+  { title: 'features.printing.title', text: 'features.printing.text', icon: IconPrinter },
+  { title: 'features.ai.title', text: 'features.ai.text', icon: IconBrain }
 ]
 
 const sidePosts = [
-  {
-    tag: 'Mobility',
-    title: 'The Path to Recovery: Evidence-Based Approaches in Modern Physiotherapy',
-    image: imageRoutes.articleMobility
-  },
-  {
-    tag: 'Strength',
-    title: 'This Pain Is Temporary: Science-Backed Progressions for Lasting Relief',
-    image: imageRoutes.articleStrength
-  }
+  { id: 'mobility-recovery', image: imageRoutes.articleMobility },
+  { id: 'lasting-relief', image: imageRoutes.articleStrength }
 ]
+
+async function checkApiConnection() {
+  try {
+    await api('/')
+    apiConnectionMessage.value = t('api.connected')
+  }
+  catch (error) {
+    console.error('API connection check failed', error)
+    apiConnectionMessage.value = t('api.failed')
+  }
+}
+
+onMounted(() => {
+  checkApiConnection()
+})
 </script>
 
 <style scoped>
@@ -286,6 +270,13 @@ const sidePosts = [
   color: #deecec;
   font-size: 1.05rem;
   line-height: 1.45;
+}
+
+.hero-api-status {
+  margin-top: 14px;
+  color: #d7f5ee;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .hero-button {
