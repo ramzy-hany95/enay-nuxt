@@ -24,8 +24,14 @@
           <h2>{{ $t('common.faqTitle') }}</h2>
         <p class="faq-section__intro">{{ $t('common.faqIntro') }}</p>
 
-        <div class="faq-list">
-          <details v-for="(item, index) in faqItems" :key="item.question" class="faq-item" :open="index === 0">
+        <p v-if="faqStatus === 'pending' || faqStatus === 'idle'" class="mt-8" role="status">{{ $t('faq.loading') }}</p>
+        <div v-else-if="faqError" class="mt-8" role="alert">
+          <p>{{ $t('faq.loadError') }}</p>
+          <button type="button" class="mt-3 font-semibold text-emerald-700" @click="refreshFaqs()">{{ $t('faq.retry') }}</button>
+        </div>
+        <p v-else-if="!faqItems.length" class="mt-8">{{ $t('faq.empty') }}</p>
+        <div v-else class="faq-list">
+          <details v-for="(item, index) in faqItems" :key="item.id" class="faq-item" :open="index === 0">
             <summary>
               <span>{{ item.question }}</span>
               <span class="faq-item__icon"></span>
@@ -51,33 +57,8 @@ const services = serviceItems.map((service) => ({
   imageUrl: imageModules[`/assets/img/${service.image}`] || imageModules['/assets/img/background-paint.png']
 }))
 
-const faqItems = [
-  {
-    question: 'What should I expect during my initial assessment?',
-    answer:
-      'Your first visit includes a full diagnostic session focused on movement analysis, symptom triggers, and practical recovery planning tailored to your condition.'
-  },
-  {
-    question: 'How will my treatment plan be developed?',
-    answer:
-      'We create your treatment plan around your clinical assessment, goals, daily demands, and how your body responds to therapy over time.'
-  },
-  {
-    question: 'What types of treatments can I expect?',
-    answer:
-      'Depending on the service, your care may include manual therapy, guided exercise, neuromuscular re-education, pain management, or technology-assisted rehabilitation.'
-  },
-  {
-    question: 'How often will I need to attend sessions?',
-    answer:
-      'Session frequency varies depending on severity, service type, and recovery goals. Your therapist will recommend a schedule after the initial evaluation.'
-  },
-  {
-    question: 'What is the role of home exercises in my recovery?',
-    answer:
-      'Home exercises help reinforce clinical progress, improve consistency between sessions, and support long-term recovery results.'
-  }
-]
+
+const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs } = await useWebsiteFaqs()
 </script>
 
 <style scoped>

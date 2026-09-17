@@ -1,16 +1,15 @@
 <template>
   <div class="home-page bg-white text-slate-900">
     <section class="hero-section">
-      <div class="hero-image" :style="{ backgroundImage: 'url(' + imageRoutes.hero + ')' }"></div>
+      <div class="hero-image" :style="{ backgroundImage: 'url(' + heroImage + ')' }"></div>
       <div class="hero-overlay"></div>
       <div class="hero-bottom-fade"></div>
 
       <div class="hero-content mx-auto max-w-6xl px-4 md:px-8">
-        <p class="hero-chip">{{ $t('home.hero.chip') }}</p>
-        <h1 class="hero-title">{{ $t('home.hero.title') }}</h1>
-        <p class="hero-subtitle">{{ $t('home.hero.subtitle') }}</p>
-        <p v-if="apiConnectionMessage" class="hero-api-status">{{ apiConnectionMessage }}</p>
-        <NuxtLink to="/book-evaluation" class="hero-button">{{ $t('home.hero.cta') }}</NuxtLink>
+        <p class="hero-chip">{{ content?.hero_sub_description || $t('home.hero.chip') }}</p>
+        <h1 class="hero-title">{{ content?.hero_title || $t('home.hero.title') }}</h1>
+        <p class="hero-subtitle">{{ content?.hero_description || $t('home.hero.subtitle') }}</p>
+        <NuxtLink :to="homeButtonHref(content?.hero_button_href, '/book-evaluation')" class="hero-button">{{ content?.hero_button_text || $t('home.hero.cta') }}</NuxtLink>
       </div>
     </section>
 
@@ -18,8 +17,8 @@
       <div class="mx-auto max-w-6xl px-4 md:px-8">
         <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.05fr_1fr] lg:items-center">
           <div>
-            <h2 class="section-title mb-6">{{ $t('home.tech.title') }}</h2>
-            <p class="section-text max-w-xl">{{ $t('home.tech.text') }}</p>
+            <h2 class="section-title mb-6">{{ content?.features_title || $t('home.tech.title') }}</h2>
+            <p class="section-text max-w-xl">{{ content?.features_description || $t('home.tech.text') }}</p>
           </div>
 
           <div class="tech-image-wrap">
@@ -27,11 +26,11 @@
           </div>
         </div>
 
-        <div class="feature-grid mt-12">
-          <article class="feature-item" v-for="feature in features" :key="feature.title">
-            <component :is="feature.icon" class="feature-icon" aria-hidden="true" />
-            <h3>{{ $t(feature.title) }}</h3>
-            <p>{{ $t(feature.text) }}</p>
+        <div v-if="features.length" class="feature-grid mt-12">
+          <article class="feature-item" v-for="feature in features" :key="feature.id ?? feature.title">
+            <IconScanEye class="feature-icon" aria-hidden="true" />
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
           </article>
         </div>
       </div>
@@ -42,21 +41,21 @@
         <img :src="imageRoutes.kingdom" :alt="$t('home.images.rehabilitationSystem')" class="rounded-[18px] shadow-[0_24px_55px_rgba(0,0,0,0.45)]" />
 
         <div>
-          <h2 class="section-title mb-6">{{ $t('home.kingdom.title') }}</h2>
-          <p class="section-text mb-7">{{ $t('home.kingdom.text') }}</p>
+          <h2 class="section-title mb-6">{{ content?.cta_title || $t('home.kingdom.title') }}</h2>
+          <p class="section-text mb-7">{{ content?.cta_description || $t('home.kingdom.text') }}</p>
 
           <ul class="highlight-list mb-8">
             <li>
-              <IconBolt class="highlight-icon" aria-hidden="true" />
-              <span>{{ $t('home.kingdom.highlight1') }}</span>
+              <component :is="ctaIcon(content?.cta_first_icon, IconBolt)" class="highlight-icon" aria-hidden="true" />
+              <span>{{ content?.cta_first_title || $t('home.kingdom.highlight1') }}</span>
             </li>
             <li>
-              <IconTargetArrow class="highlight-icon" aria-hidden="true" />
-              <span>{{ $t('home.kingdom.highlight2') }}</span>
+              <component :is="ctaIcon(content?.cta_second_icon, IconTargetArrow)" class="highlight-icon" aria-hidden="true" />
+              <span>{{ content?.cta_second_title || $t('home.kingdom.highlight2') }}</span>
             </li>
           </ul>
 
-          <NuxtLink to="/services" class="hero-button">{{ $t('home.kingdom.learn') }}</NuxtLink>
+          <NuxtLink :to="homeButtonHref(content?.cta_button_href, '/services')" class="hero-button">{{ content?.cta_button_text || $t('home.kingdom.learn') }}</NuxtLink>
         </div>
       </div>
     </section>
@@ -68,25 +67,30 @@
           <NuxtLink to="/blogs" class="view-all">{{ $t('home.articles.viewAll') }}</NuxtLink>
         </div>
 
-        <div class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-          <article class="article-card article-card-large">
-            <img :src="imageRoutes.articleMain" :alt="$t('blogs.injury-prevention.title')" />
-            <span class="article-tag article-tag-floating">{{ $t('blogs.injury-prevention.category') }}</span>
+        <p v-if="status === 'pending' || status === 'idle'" role="status">{{ $t('home.loading') }}</p>
+        <div v-else-if="error" role="alert">
+          <p>{{ $t('home.loadError') }}</p>
+          <button type="button" class="view-all" @click="refresh()">{{ $t('home.retry') }}</button>
+        </div>
+        <p v-else-if="!mainPost">{{ $t('blog.empty') }}</p>
+        <div v-else class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+          <NuxtLink :to="`/blogs/${encodeURIComponent(mainPost.slug)}`" class="article-card article-card-large">
+            <img :src="blogImage(mainPost.image)" :alt="mainPost.title" />
             <div class="article-overlay">
-              <p class="article-date">{{ $t('blogs.injury-prevention.date') }}</p>
-              <h3>{{ $t('blogs.injury-prevention.title') }}</h3>
+              <span v-if="mainPost.category" class="article-tag">{{ mainPost.category.name }}</span>
+              <p class="article-date">{{ blogDate(mainPost.published_at) }}</p>
+              <h3>{{ mainPost.title }}</h3>
             </div>
-          </article>
-
+          </NuxtLink>
           <div class="space-y-5">
-            <article class="article-mini" v-for="post in sidePosts" :key="post.id">
-              <img :src="post.image" :alt="$t(`blogs.${post.id}.title`)" />
+            <NuxtLink v-for="post in sidePosts" :key="post.id" :to="`/blogs/${encodeURIComponent(post.slug)}`" class="article-mini">
+              <img :src="blogImage(post.image)" :alt="post.title" />
               <div>
-                <span class="article-tag">{{ $t(`blogs.${post.id}.category`) }}</span>
-                <p class="article-date">{{ $t(`blogs.${post.id}.date`) }}</p>
-                <h3>{{ $t(`blogs.${post.id}.title`) }}</h3>
+                <span v-if="post.category" class="article-tag">{{ post.category.name }}</span>
+                <p class="article-date">{{ blogDate(post.published_at) }}</p>
+                <h3>{{ post.title }}</h3>
               </div>
-            </article>
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -114,70 +118,34 @@
   </div>
 </template>
 
-<script setup>
-import heroImg from '../assets/img/Headenglish.png'
-import techImg from '../assets/img/Container.png'
-import kingdomImg from '../assets/img/WithFallback.png'
-import articleMainImg from '../assets/img/background-paint.png'
-import articleMobilityImg from '../assets/img/Image.png'
-import articleStrengthImg from '../assets/img/Image1.png'
-import ctaImg from '../assets/img/Section1.png'
-
-import {
-  IconBolt,
-  IconBrain,
-  IconFingerprintScan,
-  IconPrinter,
-  IconRulerMeasure,
-  IconScan,
-  IconScanEye,
-  IconTargetArrow
-} from '@tabler/icons-vue'
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import heroImg from '~/assets/img/Headenglish.png'
+import techImg from '~/assets/img/Container.png'
+import kingdomImg from '~/assets/img/WithFallback.png'
+import ctaImg from '~/assets/img/Section1.png'
+import { IconBolt, IconScanEye, IconTargetArrow } from '@tabler/icons-vue'
 import { useI18n } from 'vue-i18n'
+import { homeButtonHref } from '~/composables/useWebsiteHome'
 
 const { t } = useI18n()
-const api = useApi()
-const apiConnectionMessage = ref('')
+const { blogImage, blogDate } = useBlogPresentation()
+const imageRoutes = { tech: techImg, kingdom: kingdomImg, cta: ctaImg }
+const { data: home, status, error, refresh } = await useWebsiteHome()
+const content = computed(() => home.value?.content)
+const heroImage = computed(() => content.value?.hero_banner ? blogImage(content.value.hero_banner) : heroImg)
+const features = computed(() => home.value?.features?.filter(feature => feature.title) || [])
+const mainPost = computed(() => home.value?.latest_blogs?.[0])
+const sidePosts = computed(() => home.value?.latest_blogs?.slice(1) || [])
 
-const imageRoutes = {
-  hero: heroImg,
-  tech: techImg,
-  kingdom: kingdomImg,
-  articleMain: articleMainImg,
-  articleMobility: articleMobilityImg,
-  articleStrength: articleStrengthImg,
-  cta: ctaImg
+function ctaIcon(name: string | undefined, fallback: typeof IconBolt) {
+  if (name === 'icon1') return IconBolt
+  if (name === 'icon2') return IconTargetArrow
+  return fallback
 }
-
-const features = [
-  { title: 'features.cbct.title', text: 'features.cbct.text', icon: IconScanEye },
-  { title: 'features.ceph.title', text: 'features.ceph.text', icon: IconRulerMeasure },
-  { title: 'features.digital.title', text: 'features.digital.text', icon: IconFingerprintScan },
-  { title: 'features.intraoral.title', text: 'features.intraoral.text', icon: IconScan },
-  { title: 'features.printing.title', text: 'features.printing.text', icon: IconPrinter },
-  { title: 'features.ai.title', text: 'features.ai.text', icon: IconBrain }
-]
-
-const sidePosts = [
-  { id: 'mobility-recovery', image: imageRoutes.articleMobility },
-  { id: 'lasting-relief', image: imageRoutes.articleStrength }
-]
-
-async function checkApiConnection() {
-  try {
-    await api('/')
-    apiConnectionMessage.value = t('api.connected')
-  }
-  catch (error) {
-    console.error('API connection check failed', error)
-    apiConnectionMessage.value = t('api.failed')
-  }
-}
-
-onMounted(() => {
-  checkApiConnection()
-})
+const highlights = computed(() => [
+  { text: content.value?.cta_first_title || t('home.kingdom.highlight1'), icon: ctaIcon(content.value?.cta_first_icon, IconBolt) },
+  { text: content.value?.cta_second_title || t('home.kingdom.highlight2'), icon: ctaIcon(content.value?.cta_second_icon, IconTargetArrow) }
+])
 </script>
 
 <style scoped>

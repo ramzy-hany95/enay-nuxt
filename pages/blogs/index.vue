@@ -9,27 +9,44 @@
     </section>
 
     <section class="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
-      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        <NuxtLink v-for="post in posts" :key="post.id" :to="`/blogs/${post.id}`" class="blog-card">
-          <img :src="post.imageUrl" :alt="$t(`blogs.${post.id}.title`)" class="blog-card__image" />
+      <p v-if="status === 'pending' || status === 'idle'" role="status">{{ $t('blog.loading') }}</p>
+      <div v-else-if="error" role="alert">
+        <p>{{ $t('blog.loadError') }}</p>
+        <button type="button" class="blog-card__link" @click="refresh()">{{ $t('blog.retry') }}</button>
+      </div>
+      <p v-else-if="!posts.length">{{ $t('blog.empty') }}</p>
+      <div v-else class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <NuxtLink v-for="post in posts" :key="post.id" :to="`/blogs/${encodeURIComponent(post.slug)}`" class="blog-card">
+          <img :src="blogImage(post.image)" :alt="post.title" class="blog-card__image" />
           <div class="blog-card__body">
-            <span class="blog-card__tag">{{ $t(`blogs.${post.id}.category`) }}</span>
-            <p class="blog-card__date">{{ $t(`blogs.${post.id}.date`) }}</p>
-            <h2>{{ $t(`blogs.${post.id}.title`) }}</h2>
-            <p class="blog-card__excerpt">{{ $t(`blogs.${post.id}.excerpt`) }}</p>
+            <span v-if="post.category" class="blog-card__tag">{{ post.category?.name }}</span>
+            <p class="blog-card__date">{{ blogDate(post.published_at) }}</p>
+            <h2>{{ post.title }}</h2>
+            <p class="blog-card__excerpt">{{ post.description }}</p>
             <span class="blog-card__link">{{ $t('common.readArticle') }}</span>
           </div>
         </NuxtLink>
       </div>
     </section>
 
+    <nav v-if="!error && blogPage && blogPage.last_page > 1" class="mb-8 flex items-center justify-center gap-4" aria-label="Pagination">
+      <button type="button" :disabled="page <= 1 || status === 'pending'" @click="page--">{{ $t('blog.previous') }}</button>
+      <span>{{ page }} / {{ blogPage.last_page }}</span>
+      <button type="button" :disabled="page >= blogPage.last_page || status === 'pending'" @click="page++">{{ $t('blog.next') }}</button>
+    </nav>
     <section class="faq-section">
       <div class="mx-auto max-w-6xl px-4 py-14 md:px-8 md:py-20">
         <h2>{{ $t('common.faqTitle') }}</h2>
         <p class="faq-section__intro">{{ $t('common.faqIntro') }}</p>
 
-            <div class="faq-list">
-              <details v-for="(item, index) in $t('services.faqItems')" :key="index" class="faq-item" :open="index === 0">
+            <p v-if="faqStatus === 'pending' || faqStatus === 'idle'" class="mt-8" role="status">{{ $t('faq.loading') }}</p>
+        <div v-else-if="faqError" class="mt-8" role="alert">
+          <p>{{ $t('faq.loadError') }}</p>
+          <button type="button" class="mt-3 font-semibold text-emerald-700" @click="refreshFaqs()">{{ $t('faq.retry') }}</button>
+        </div>
+        <p v-else-if="!faqItems.length" class="mt-8">{{ $t('faq.empty') }}</p>
+        <div v-else class="faq-list">
+              <details v-for="(item, index) in faqItems" :key="item.id" class="faq-item" :open="index === 0">
             <summary>
               <span>{{ item.question }}</span>
               <span class="faq-item__icon"></span>
@@ -43,19 +60,17 @@
 </template>
 
 <script setup lang="ts">
-import { blogPosts } from '~/data/blogs'
+import { getPublicBlogs } from '~/services/blogs'
 
-const imageModules = import.meta.glob('~/assets/img/*', {
-  eager: true,
-  import: 'default'
-}) as Record<string, string>
-
-const posts = blogPosts.map((post) => ({
-  ...post,
-  imageUrl: imageModules[`/assets/img/${post.image}`] || imageModules['/assets/img/background-paint.png']
-}))
-
-// FAQ items are provided via `$t('services.faqItems')` in the template
+const { blogImage, blogDate } = useBlogPresentation()
+const page = ref(1)
+const { data: blogPage, status, error, refresh } = await useAsyncData(
+  () => 'public-blogs-' + page.value,
+  () => getPublicBlogs(page.value),
+  { server: false }
+)
+const posts = computed(() => blogPage.value?.data || [])
+const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs } = await useWebsiteFaqs()
 </script>
 
 <style scoped>

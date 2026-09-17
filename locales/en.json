@@ -1,4 +1,10 @@
 {
+  "faq": {
+    "loading": "Loading frequently asked questions?",
+    "loadError": "Unable to load frequently asked questions.",
+    "retry": "Try again",
+    "empty": "No frequently asked questions available yet."
+  },
   "nav": {
     "services": "Services",
     "blogs": "Blogs",
@@ -33,6 +39,9 @@
     "ar": "العربية"
   },
   "home": {
+    "loading": "Loading homepage?",
+    "loadError": "Unable to load homepage content. Please try again.",
+    "retry": "Try again",
     "hero": {
       "chip": "First in Saudi Arabia",
       "title": "Creative Care",
@@ -69,6 +78,12 @@
     }
   },
   "blog": {
+    "loading": "Loading articles?",
+    "loadError": "Unable to load articles. Please try again.",
+    "retry": "Try again",
+    "empty": "No articles published yet.",
+    "previous": "Previous",
+    "next": "Next",
     "eyebrow": "Insights & News",
     "title": "From Our Blog",
     "intro": "Stories, guides and clinical insights for better recovery.",

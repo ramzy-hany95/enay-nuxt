@@ -27,7 +27,7 @@
     <section class="about-choose py-10 md:py-16">
       <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
         <div class="about-reasons">
-          <h2>{{ $t('about.whyTitle') }}</h2>
+          <h2>{{ whyTitle }}</h2>
 
           <div class="reason-item" v-for="reason in reasons" :key="reason.number">
             <span class="reason-item__number">{{ reason.number }}</span>
@@ -51,75 +51,53 @@
 </template>
 
 <script setup lang="ts">
-import heroImageStatic from '../assets/img/photo.png'
+import heroImage from '../assets/img/photo.png'
 import storyImageStatic from '../assets/img/Container.png'
 import galleryTopLeftStatic from '../assets/img/Image.png'
 import galleryTopRightStatic from '../assets/img/Image1.png'
 import galleryBottomStatic from '../assets/img/WithFallback.png'
-
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRuntimeConfig, useAsyncData } from '#imports'
 import { getWebsiteAbout } from '~/services/apout'
 
 const { t } = useI18n()
+const apiBase = useRuntimeConfig().public.apiBaseUrl.replace(/\/+$/, '')
+const { data: aboutData } = await useAsyncData('websiteAbout', () => getWebsiteAbout(), { server: false })
+const about = computed(() => aboutData.value?.data)
 
-// Fetch about content server-side to avoid CORS and use API-provided text/images when available
-const { data: aboutData } = await useAsyncData('websiteAbout', () => getWebsiteAbout(), { server: true })
-const apiBase = useRuntimeConfig().public.apiBaseUrl.replace(/\/$/, '')
+function imageUrl(path: string | undefined, fallback: string) {
+  if (!path?.trim()) return fallback
+  if (/^https?:\/\//i.test(path)) return path
+  const relativePath = path.replace(/^\/+/, '')
+  return `${apiBase}/${relativePath.startsWith('storage/') ? relativePath : `storage/${relativePath}`}`
+}
 
-const heroImage = computed(() => {
-  const path = aboutData.value?.data?.section_one_images?.[0]
-  return path ? `${apiBase}/${path}` : heroImageStatic
-})
+const storyImage = computed(() => imageUrl(about.value?.section_one_images?.[0], storyImageStatic))
+const galleryTopLeft = computed(() => imageUrl(about.value?.section_two_image_one, galleryTopLeftStatic))
+const galleryTopRight = computed(() => imageUrl(about.value?.section_two_image_two, galleryTopRightStatic))
+const galleryBottom = computed(() => imageUrl(about.value?.section_two_image_three, galleryBottomStatic))
 
-const storyImage = computed(() => {
-  const path = aboutData.value?.data?.section_two_image_one
-  return path ? `${apiBase}/${path}` : storyImageStatic
-})
-
-const galleryTopLeft = computed(() => {
-  const path = aboutData.value?.data?.section_two_image_two
-  return path ? `${apiBase}/${path}` : galleryTopLeftStatic
-})
-
-const galleryTopRight = computed(() => {
-  const path = aboutData.value?.data?.section_two_image_three
-  return path ? `${apiBase}/${path}` : galleryTopRightStatic
-})
-
-const galleryBottom = computed(() => {
-  const path = aboutData.value?.data?.section_one_images?.[0]
-  return path ? `${apiBase}/${path}` : galleryBottomStatic
-})
-
-const description = computed(() => aboutData.value?.data?.description || t('about.lead'))
-
-const philosophyTitle = computed(() => aboutData.value?.data?.section_one_title || t('about.philosophyTitle'))
-const philosophyText = computed(() => aboutData.value?.data?.section_one_description || t('about.philosophyText'))
+const description = computed(() => about.value?.description || t('about.lead'))
+const philosophyTitle = computed(() => about.value?.section_one_title || t('about.philosophyTitle'))
+const philosophyText = computed(() => about.value?.section_one_description || t('about.philosophyText'))
+const whyTitle = computed(() => about.value?.section_two_title || t('about.whyTitle'))
 
 const reasons = computed(() => {
-  if (aboutData.value?.data) {
-    const s1 = aboutData.value.data.section_two_description_one || ''
-    const s2 = aboutData.value.data.section_two_description_two || ''
-    const s3 = aboutData.value.data.section_two_description_three || ''
-    const def = t('about.reasons') as any
-    const parse = (s: string, fallback: any) => {
-      const lines = s.split(/\r?\n/).filter(Boolean)
-      return {
-        number: fallback?.number || '',
-        title: lines[0] || fallback?.title || '',
-        text: lines.slice(1).join('\n') || fallback?.text || ''
-      }
-    }
+  const descriptions = [
+    about.value?.section_two_description_one,
+    about.value?.section_two_description_two,
+    about.value?.section_two_description_three
+  ]
 
-    return [
-      parse(s1, def?.[0] || { number: '01', title: '', text: '' }),
-      parse(s2, def?.[1] || { number: '02', title: '', text: '' }),
-      parse(s3, def?.[2] || { number: '03', title: '', text: '' })
-    ]
-  }
-  return t('about.reasons')
+  return descriptions.map((description, index) => {
+    const lines = description?.split(/\r?\n/).map(line => line.trim()).filter(Boolean) || []
+    return {
+      number: String(index + 1).padStart(2, '0'),
+      title: lines[0] || t(`about.reasons.${index}.title`),
+      text: lines.length ? lines.slice(1).join('\n') : t(`about.reasons.${index}.text`)
+    }
+  })
 })
 </script>
 

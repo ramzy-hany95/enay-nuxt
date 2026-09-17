@@ -1,20 +1,25 @@
 <template>
-  <div class="blog-details" v-if="post">
+  <div v-if="status === 'pending' || status === 'idle'" class="mx-auto max-w-4xl px-4 py-16" role="status">{{ $t('blog.loading') }}</div>
+  <div v-else-if="error" class="mx-auto max-w-4xl px-4 py-16" role="alert">
+    <p>{{ $t('blog.loadError') }}</p>
+    <button type="button" class="blog-back" @click="refresh()">{{ $t('blog.retry') }}</button>
+  </div>
+  <div class="blog-details" v-else-if="post">
     <section class="mx-auto max-w-4xl px-4 py-12 md:px-8 md:py-16">
       <NuxtLink to="/blogs" class="blog-back">{{ $t('blog.backToList') }}</NuxtLink>
 
       <div class="blog-meta">
-        <span class="blog-tag">{{ $t(`blogs.${post.id}.category`) }}</span>
-        <p>{{ $t(`blogs.${post.id}.date`) }}</p>
+        <span v-if="post.category" class="blog-tag">{{ post.category?.name }}</span>
+        <p>{{ blogDate(post.published_at) }}</p>
       </div>
 
-      <h1>{{ $t(`blogs.${post.id}.title`) }}</h1>
-      <p class="blog-lead">{{ $t(`blogs.${post.id}.excerpt`) }}</p>
+      <h1>{{ post.title }}</h1>
+      <p class="blog-lead">{{ post.description }}</p>
 
-      <img :src="post.imageUrl" :alt="$t(`blogs.${post.id}.title`)" class="blog-cover" />
+      <img :src="blogImage(post.image)" :alt="post.title" class="blog-cover" />
 
       <div class="blog-content">
-        <p v-for="(paragraph, idx) in $t(`blogs.${post.id}.content`)" :key="idx">{{ paragraph }}</p>
+        <p v-for="(paragraph, idx) in paragraphs" :key="idx">{{ paragraph }}</p>
       </div>
     </section>
   </div>
@@ -26,26 +31,19 @@
 </template>
 
 <script setup lang="ts">
-import { blogPosts } from '~/data/blogs'
+import { getPublicBlog } from '~/services/blogs'
 
 const route = useRoute()
-const imageModules = import.meta.glob('~/assets/img/*', {
-  eager: true,
-  import: 'default'
-}) as Record<string, string>
-
-const post = computed(() => {
-  const item = blogPosts.find((entry) => entry.id === route.params.id)
-
-  if (!item) {
-    return null
-  }
-
-  return {
-    ...item,
-    imageUrl: imageModules[`/assets/img/${item.image}`] || imageModules['/assets/img/background-paint.png']
-  }
-})
+// The existing dynamic route is named [id], but its value is the API slug.
+const slug = computed(() => String(route.params.id || ''))
+const { blogImage, blogDate } = useBlogPresentation()
+const { data: result, status, error, refresh } = await useAsyncData(
+  () => 'public-blog-' + slug.value,
+  () => getPublicBlog(slug.value),
+  { server: false }
+)
+const post = computed(() => result.value?.data)
+const paragraphs = computed(() => post.value?.content?.split(/\r?\n\s*\r?\n/).filter(Boolean) || [])
 </script>
 
 <style scoped>

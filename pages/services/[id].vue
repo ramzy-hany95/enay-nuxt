@@ -51,8 +51,14 @@
         <h2>{{ $t('common.faqTitle') }}</h2>
         <p class="faq-section__intro">{{ $t('common.faqIntro') }}</p>
 
-        <div class="faq-list">
-          <details v-for="(item, index) in $t('services.faqItems')" :key="index" class="faq-item" :open="index === 0">
+        <p v-if="faqStatus === 'pending' || faqStatus === 'idle'" class="mt-8" role="status">{{ $t('faq.loading') }}</p>
+        <div v-else-if="faqError" class="mt-8" role="alert">
+          <p>{{ $t('faq.loadError') }}</p>
+          <button type="button" class="mt-3 font-semibold text-emerald-700" @click="refreshFaqs()">{{ $t('faq.retry') }}</button>
+        </div>
+        <p v-else-if="!faqItems.length" class="mt-8">{{ $t('faq.empty') }}</p>
+        <div v-else class="faq-list">
+          <details v-for="(item, index) in faqItems" :key="item.id" class="faq-item" :open="index === 0">
             <summary>
               <span>{{ item.question }}</span>
               <span class="faq-item__icon"></span>
@@ -94,7 +100,8 @@ const service = computed(() => {
   }
 })
 
-// FAQ items used directly in template via `$t('services.faqItems')`
+
+const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs } = await useWebsiteFaqs()
 </script>
 
 <style scoped>
