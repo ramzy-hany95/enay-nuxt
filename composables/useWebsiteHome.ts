@@ -1,7 +1,11 @@
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { getWebsiteHome } from '~/services/home'
 
 export function useWebsiteHome() {
-  return useAsyncData('website-home', () => getWebsiteHome(), { server: false })
+  const { locale } = useI18n({ useScope: 'global' })
+  const key = computed(() => 'website-home-' + locale.value)
+  return useAsyncData(key, () => getWebsiteHome(locale.value), { server: false })
 }
 
 export function homeButtonHref(value: string | undefined, fallback: string) {

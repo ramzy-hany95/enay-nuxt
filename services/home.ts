@@ -34,9 +34,9 @@ export interface WebsiteHome {
   latest_blogs: PublicBlog[]
 }
 
-export async function getWebsiteHome() {
+export async function getWebsiteHome(lang: string) {
   const api = useApi()
-  const result = await api<{ response: number; data: WebsiteHome }>('/api/v1/get_website_home', { method: 'GET' })
+  const result = await api<{ response: number; data: WebsiteHome }>('/api/v1/get_website_home', { method: 'GET', query: { lang } })
   if (result.response !== 200 || !result.data) throw new Error('Unable to load homepage')
   return result.data
 }

@@ -289,6 +289,74 @@ const highlights = computed(() => [
   gap: 24px;
 }
 
+.feature-item {
+  position: relative;
+  min-width: 0;
+  padding: 28px 24px;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: background-color 240ms ease;
+}
+
+.feature-item::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #008577;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 320ms ease;
+}
+
+.feature-item .feature-icon {
+  box-sizing: content-box;
+  padding: 12px;
+  border-radius: 16px;
+  transition: color 240ms ease, background-color 240ms ease;
+}
+
+.feature-item h3,
+.feature-item p {
+  transition: color 240ms ease;
+}
+
+@media (hover: hover) {
+  .feature-item:hover {
+    background-color: #eaf2f1;
+  }
+
+  .feature-item:hover::before {
+    transform: scaleY(1);
+  }
+
+  .feature-item:hover .feature-icon {
+    color: #008577;
+    background-color: #d4e6e4;
+    filter: none;
+  }
+
+  .feature-item:hover h3 {
+    color: #182328;
+  }
+
+  .feature-item:hover p {
+    color: #62696d;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-item,
+  .feature-item::before,
+  .feature-item .feature-icon,
+  .feature-item h3,
+  .feature-item p {
+    transition: none;
+  }
+}
+
 .feature-icon,
 .highlight-icon {
   display: inline-flex;
