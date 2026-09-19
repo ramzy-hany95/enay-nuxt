@@ -100,18 +100,21 @@
       <div class="cta-bg" :style="{ backgroundImage: 'url(' + imageRoutes.cta + ')' }"></div>
       <div class="cta-overlay"></div>
       <div class="flex w-full justify-end px-4 md:px-8 lg:px-12">
-        <form class="cta-form" @submit.prevent>
+        <form class="cta-form" @submit.prevent="submitContact">
           <h3 class="py-3">{{ $t('home.contactCta.title') }}</h3>
           <div class="grid gap-4 md:grid-cols-2">
-            <input type="text" :placeholder="$t('home.contactCta.firstName')" />
-            <input type="text" :placeholder="$t('home.contactCta.lastName')" />
+            <input type="text" v-model="contactForm.first_name" :aria-label="$t('contactForm.firstName')" :placeholder="$t('home.contactCta.firstName')" required />
+            <input type="text" v-model="contactForm.last_name" :aria-label="$t('contactForm.lastName')" :placeholder="$t('home.contactCta.lastName')" required />
           </div>
           <div class="mt-3 grid gap-4 md:grid-cols-[90px_1fr]">
-            <input type="text" :placeholder="$t('home.contactCta.countryCode')" />
-            <input type="tel" :placeholder="$t('home.contactCta.phone')" />
+            <input type="text" v-model="contactForm.country_code" :aria-label="$t('contactForm.countryCode')" :placeholder="$t('home.contactCta.countryCode')" required />
+            <input type="tel" v-model="contactForm.phone" :aria-label="$t('contactForm.phone')" :placeholder="$t('home.contactCta.phone')" required />
           </div>
-          <textarea rows="4" :placeholder="$t('home.contactCta.message')"></textarea>
-          <button type="submit">{{ $t('home.contactCta.submit') }}</button>
+          <label class="mt-3 block text-sm">{{ $t('contactForm.date') }}<input v-model="contactForm.date" type="date" required /></label>
+          <textarea rows="4" v-model="contactForm.message" :aria-label="$t('contactForm.message')" :placeholder="$t('home.contactCta.message')"></textarea>
+          <button type="submit" :disabled="sending" :aria-busy="sending" class="disabled:opacity-60 disabled:cursor-wait">{{ sending ? $t('contactForm.sending') : $t('home.contactCta.submit') }}</button>
+          <p v-if="sent" role="status" class="mt-3 rounded bg-white p-3 text-sm text-emerald-800">{{ $t('contactForm.success') }}</p>
+          <p v-if="failed" role="alert" class="mt-3 rounded bg-white p-3 text-sm text-red-700">{{ $t('contactForm.error') }}</p>
         </form>
       </div>
     </section>
@@ -119,6 +122,7 @@
 </template>
 
 <script setup lang="ts">
+const { form: contactForm, sending, sent, failed, submitContact } = useContactMessage()
 import heroImg from '~/assets/img/Headenglish.png'
 import techImg from '~/assets/img/Container.png'
 import kingdomImg from '~/assets/img/WithFallback.png'

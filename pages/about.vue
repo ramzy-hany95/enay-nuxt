@@ -61,9 +61,9 @@ import { useI18n } from 'vue-i18n'
 import { useRuntimeConfig, useAsyncData } from '#imports'
 import { getWebsiteAbout } from '~/services/apout'
 
-const { t } = useI18n()
+const { t, locale } = useI18n({ useScope: 'global' })
 const apiBase = useRuntimeConfig().public.apiBaseUrl.replace(/\/+$/, '')
-const { data: aboutData } = await useAsyncData('websiteAbout', () => getWebsiteAbout(), { server: false })
+const { data: aboutData } = await useAsyncData(() => 'websiteAbout-' + locale.value, () => getWebsiteAbout(locale.value), { server: false })
 const about = computed(() => aboutData.value?.data)
 
 function imageUrl(path: string | undefined, fallback: string) {

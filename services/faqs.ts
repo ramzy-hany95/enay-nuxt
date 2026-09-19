@@ -13,9 +13,9 @@ interface WebsiteFaqsResponse {
   data: WebsiteFaq[]
 }
 
-export async function getWebsiteFaqs() {
+export async function getWebsiteFaqs(lang: string) {
   const api = useApi()
-  const result = await api<WebsiteFaqsResponse>('/api/v1/get_website_faqs', { method: 'GET' })
+  const result = await api<WebsiteFaqsResponse>('/api/v1/get_website_faqs', { method: 'GET', query: { lang } })
   if (result.response !== 200 || !Array.isArray(result.data)) {
     throw new Error('Unable to load website FAQs')
   }

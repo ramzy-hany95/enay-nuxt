@@ -1,4 +1,5 @@
 {
+  "contactForm": {"firstName":"First name","lastName":"Last name","countryCode":"Country code","phone":"Phone number","message":"Message","date":"Preferred date","sending":"Sending…","success":"Your request has been sent.","successDetails":"Our team will contact you to arrange your evaluation.","error":"Unable to send your request. Please check your details and try again."},
   "faq": {
     "loading": "Loading frequently asked questions?",
     "loadError": "Unable to load frequently asked questions.",
@@ -202,6 +203,11 @@
     }
   },
   "services": {
+    "loading": "Loading services?",
+    "loadError": "Unable to load services. Please try again.",
+    "retry": "Try again",
+    "empty": "No services are available yet.",
+    "viewDetails": "View service",
     "title": "Our Services",
     "subtitle": "Experience bespoke physical therapy designed to restore function, eliminate pain, and optimize human movement.",
     "faqIntro": "Everything you need to know before your first visit",

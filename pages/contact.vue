@@ -28,7 +28,7 @@
         <div class="contact-map">
           <iframe
             title="Clinic map"
-            src="https://www.google.com/maps?q=Saudi%20Arabia&z=12&output=embed"
+            :src="mapUrl"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
@@ -36,11 +36,11 @@
       </div>
     </section>
 
-    <section class="contact-socials pb-12 md:pb-14">
+    <section v-if="socials.length" class="contact-socials pb-12 md:pb-14">
       <div class="mx-auto flex max-w-6xl flex-wrap justify-center gap-3 px-4 md:px-8">
-        <a v-for="social in socials" :key="social.key" href="#" class="social-pill" :aria-label="$t(`contact.socials.${social.key}`)">
+        <a v-for="social in socials" :key="social.id" :href="social.href" target="_blank" rel="noopener noreferrer" class="social-pill" :aria-label="socialLabel(social)">
           <component :is="social.icon" class="social-pill__icon" aria-hidden="true" />
-          <span>{{ $t(`contact.socials.${social.key}`) }}</span>
+          <span>{{ socialLabel(social) }}</span>
         </a>
       </div>
     </section>
@@ -49,12 +49,6 @@
 
 <script setup>
 import {
-  IconBrandFacebook,
-  IconBrandInstagram,
-  IconBrandLinkedin,
-  IconBrandSnapchat,
-  IconBrandTelegram,
-  IconBrandTiktok,
   IconClock,
   IconMail,
   IconMapPin,
@@ -64,23 +58,23 @@ import heroImage from '../assets/img/photo.png'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t, te } = useI18n()
+
+const { configurations, mapUrl } = useWebsiteConfigurations()
 
 const infoItems = computed(() => [
-  { label: t('contact.labels.address'), value: t('contact.info.address'), icon: IconMapPin },
-  { label: t('contact.labels.phone'), value: t('contact.info.phone'), icon: IconPhone },
-  { label: t('contact.labels.email'), value: t('contact.info.email'), icon: IconMail },
+  { label: t('contact.labels.address'), value: configurations.value?.address || t('contact.info.address'), icon: IconMapPin },
+  { label: t('contact.labels.phone'), value: configurations.value?.phone || t('contact.info.phone'), icon: IconPhone },
+  ...(configurations.value?.phone_second ? [{ label: t('contact.labels.phone') + ' 2', value: configurations.value.phone_second, icon: IconPhone }] : []),
+  { label: t('contact.labels.email'), value: configurations.value?.email || t('contact.info.email'), icon: IconMail },
   { label: t('contact.labels.hours'), value: t('contact.info.hours'), icon: IconClock }
 ])
 
-const socials = [
-  { key: 'instagram', icon: IconBrandInstagram },
-  { key: 'telegram', icon: IconBrandTelegram },
-  { key: 'snapchat', icon: IconBrandSnapchat },
-  { key: 'tiktok', icon: IconBrandTiktok },
-  { key: 'facebook', icon: IconBrandFacebook },
-  { key: 'linkedin', icon: IconBrandLinkedin }
-]
+const { socials } = useSocialMedia()
+function socialLabel(social) {
+  const key = 'contact.socials.' + social.key
+  return te(key) ? t(key) : social.title
+}
 </script>
 
 <style scoped>

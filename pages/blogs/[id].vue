@@ -31,6 +31,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n({ useScope: 'global' })
 import { getPublicBlog } from '~/services/blogs'
 
 const route = useRoute()
@@ -38,8 +41,8 @@ const route = useRoute()
 const slug = computed(() => String(route.params.id || ''))
 const { blogImage, blogDate } = useBlogPresentation()
 const { data: result, status, error, refresh } = await useAsyncData(
-  () => 'public-blog-' + slug.value,
-  () => getPublicBlog(slug.value),
+  () => 'public-blog-' + locale.value + '-' + slug.value,
+  () => getPublicBlog(slug.value, locale.value),
   { server: false }
 )
 const post = computed(() => result.value?.data)

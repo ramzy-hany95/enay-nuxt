@@ -60,13 +60,16 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n({ useScope: 'global' })
 import { getPublicBlogs } from '~/services/blogs'
 
 const { blogImage, blogDate } = useBlogPresentation()
 const page = ref(1)
 const { data: blogPage, status, error, refresh } = await useAsyncData(
-  () => 'public-blogs-' + page.value,
-  () => getPublicBlogs(page.value),
+  () => 'public-blogs-' + locale.value + '-' + page.value,
+  () => getPublicBlogs(page.value, locale.value),
   { server: false }
 )
 const posts = computed(() => blogPage.value?.data || [])

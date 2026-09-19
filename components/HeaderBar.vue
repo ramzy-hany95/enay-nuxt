@@ -2,7 +2,7 @@
   <header class="border-b bg-white" :dir="locale === 'ar' ? 'rtl' : 'ltr'">
     <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
       <NuxtLink to="/" class="shrink-0 text-teal-800 font-bold">
-        <img src="/assets/css/logo.png" :alt="$t('common.logoAlt')" class="w-20 h-12 object-contain sm:w-24 sm:h-14" />
+        <img :src="logoFailed ? '/assets/css/logo.png' : logoUrl" :alt="configurations?.clinic_name || $t('common.logoAlt')" @error="logoFailed = true" class="w-20 h-12 object-contain sm:w-24 sm:h-14" />
       </NuxtLink>
       <nav class="hidden lg:flex gap-6 items-center">
         <NuxtLink v-for="link in links" :key="link.to" :to="link.to" class="text-gray-800 text-sm hover:underline">{{ $t(link.label) }}</NuxtLink>
@@ -42,6 +42,9 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n({ useScope: 'global' })
+const { configurations, logoUrl } = useWebsiteConfigurations()
+const logoFailed = ref(false)
+watch(logoUrl, () => { logoFailed.value = false })
 const route = useRoute()
 const nextLocale = computed(() => locale.value === 'en' ? 'ar' : 'en')
 const menuDialog = ref(null)

@@ -1,24 +1,32 @@
 <template>
-  <div v-if="service" class="service-details">
+  <div v-if="status === 'pending' || status === 'idle'" class="mx-auto max-w-6xl px-4 py-16" role="status">{{ $t('services.loading') }}</div>
+  <div v-else-if="error" class="mx-auto max-w-6xl px-4 py-16" role="alert">
+    <p>{{ $t('services.loadError') }}</p>
+    <button type="button" class="mt-4 rounded-full bg-teal-700 px-6 py-3 text-white" @click="refresh()">{{ $t('services.retry') }}</button>
+  </div>
+  <div v-else-if="service" class="service-details">
     <section class="service-details__hero">
       <div class="service-details__hero-image" :style="{ backgroundImage: `url(${service.imageUrl})` }"></div>
       <div class="service-details__hero-fade"></div>
       <div class="mx-auto flex min-h-[300px] max-w-6xl items-end px-4 pb-6 md:min-h-[420px] md:px-8 md:pb-8">
-        <h1>{{ $t(`services.${service.id}.title`) }}</h1>
+        <h1>{{ service.title }}</h1>
       </div>
     </section>
 
     <section class="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
-      <div class="service-content-block">
+      <div v-if="service.description && !service.overview.includes(service.description)" class="service-content-block">
+        <p class="whitespace-pre-line">{{ service.description }}</p>
+      </div>
+      <div v-if="service.overview.length" class="service-content-block">
         <h2>{{ $t('services.overviewTitle') }}</h2>
-        <p v-for="(paragraph, idx) in $t(`services.${service.id}.overview`)" :key="idx">{{ paragraph }}</p>
+        <p v-for="(paragraph, idx) in service.overview" :key="idx">{{ paragraph }}</p>
       </div>
 
-      <div class="service-two-col">
+      <div v-if="service.audience.length" class="service-two-col">
         <div class="service-content-block">
           <h2>{{ $t('services.audienceTitle') }}</h2>
           <div class="service-bullets service-bullets--two">
-            <div v-for="(item, idx) in $t(`services.${service.id}.audience`)" :key="idx" class="service-bullet service-bullet--line">
+            <div v-for="(item, idx) in service.audience" :key="idx" class="service-bullet service-bullet--line">
               <span class="service-bullet__icon"></span>
               <span>{{ item }}</span>
             </div>
@@ -26,23 +34,23 @@
         </div>
       </div>
 
-      <div class="service-content-block service-content-block--full-row">
+      <div v-if="service.outcomes.length" class="service-content-block service-content-block--full-row">
         <h2>{{ $t('services.outcomesTitle') }}</h2>
         <div class="service-bullets service-bullets--two">
-          <div v-for="(item, idx) in $t(`services.${service.id}.outcomes`)" :key="idx" class="service-bullet">
+          <div v-for="(item, idx) in service.outcomes" :key="idx" class="service-bullet">
             <span class="service-bullet__dot"></span>
             <span>{{ item }}</span>
           </div>
         </div>
       </div>
 
-      <div class="duration-card">
+      <div v-if="service.duration || service.durationNote" class="duration-card">
         <div class="duration-card__label">
           <span class="duration-card__icon"></span>
           <span>{{ $t('services.durationLabel') }}</span>
         </div>
-        <h3>{{ $t(`services.${service.id}.duration`) }}</h3>
-        <p>{{ $t(`services.${service.id}.durationNote`) }}</p>
+        <h3>{{ service.duration }}</h3>
+        <p>{{ service.durationNote }}</p>
       </div>
     </section>
 
@@ -79,27 +87,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { serviceItems } from '~/data/services'
-
 const route = useRoute()
-const imageModules = import.meta.glob('~/assets/img/*', {
-  eager: true,
-  import: 'default'
-}) as Record<string, string>
-
-const service = computed(() => {
-  const item = serviceItems.find((entry) => entry.id === route.params.id)
-
-  if (!item) {
-    return null
-  }
-
-  return {
-    ...item,
-    imageUrl: imageModules[`/assets/img/${item.image}`] || imageModules['/assets/img/background-paint.png']
-  }
-})
-
+const slug = computed(() => String(route.params.id || ''))
+const { presentService } = useServicePresentation()
+const { data: serviceData, status, error, refresh } = await useWebsiteService(slug)
+const localServices = useLocalServices()
+const service = computed(() => serviceData.value
+  ? presentService(serviceData.value)
+  : localServices.value.find(item => item.slug === slug.value) || null)
 
 const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs } = await useWebsiteFaqs()
 </script>

@@ -9,12 +9,12 @@
 
         <form class="booking-form" @submit.prevent="submitBooking">
           <div class="booking-grid booking-grid--two">
-            <input v-model="form.firstName" type="text" :placeholder="$t('booking.form.firstName')" required />
-            <input v-model="form.lastName" type="text" :placeholder="$t('booking.form.lastName')" required />
+            <input v-model="form.first_name" type="text" :placeholder="$t('booking.form.first_name')" required />
+            <input v-model="form.last_name" type="text" :placeholder="$t('booking.form.last_name')" required />
           </div>
 
           <div class="booking-grid booking-grid--phone">
-            <select v-model="form.countryCode" aria-label="Country code">
+            <select v-model="form.country_code" aria-label="Country code">
               <option value="+20">+20</option>
               <option value="+966">+966</option>
               <option value="+971">+971</option>
@@ -28,9 +28,10 @@
 
           <textarea v-model="form.message" rows="5" :placeholder="$t('booking.form.message')"></textarea>
 
+          <p v-if="failed" role="alert" class="text-red-700">{{ $t('contactForm.error') }}</p>
           <div class="booking-actions">
             <NuxtLink to="/" class="btn btn--ghost">{{ $t('common.back') }}</NuxtLink>
-            <button type="submit" class="btn btn--primary">{{ $t('booking.form.submit') }}</button>
+            <button type="submit" :disabled="sending" :aria-busy="sending" class="btn btn--primary disabled:opacity-60">{{ sending ? $t('contactForm.sending') : $t('booking.form.submit') }}</button>
           </div>
         </form>
       </div>
@@ -46,8 +47,8 @@
           {{ formattedDate }}
         </p>
 
-        <h2>{{ $t('booking.success.title') }}</h2>
-        <p class="success-text">{{ $t('booking.success.text') }}</p>
+        <h2>{{ $t('contactForm.success') }}</h2>
+        <p class="success-text">{{ $t('contactForm.successDetails') }}</p>
 
         <div class="success-actions">
           <button type="button" class="success-secondary-btn" @click="closePopup">{{ $t('booking.success.close') }}</button>
@@ -65,17 +66,10 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const isSubmitted = ref(false)
-const form = ref({
-  firstName: '',
-  lastName: '',
-  countryCode: '+20',
-  phone: '',
-  date: new Date().toISOString().slice(0, 10),
-  message: ''
-})
+const { form, sending, failed, submitContact } = useContactMessage()
 
 const formattedDate = computed(() => {
-  const value = form.value.date
+  const value = form.date
 
   if (!value) {
     return t('booking.form.dateNotSelected')
@@ -89,8 +83,8 @@ const formattedDate = computed(() => {
   })
 })
 
-function submitBooking() {
-  isSubmitted.value = true
+async function submitBooking() {
+  isSubmitted.value = await submitContact()
 }
 
 function closePopup() {

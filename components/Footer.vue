@@ -12,7 +12,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <h4 class="text-sm tracking-wider text-emerald-100 mb-3">{{ $t('footer.addressTitle') }}</h4>
-          <p class="text-emerald-100" v-html="$t('footer.address').replace('\n','<br/>')"></p>
+          <p class="text-emerald-100 whitespace-pre-line">{{ configurations?.address || $t('footer.address') }}</p>
         </div>
 
         <div>
@@ -28,13 +28,15 @@
 
         <div>
           <h4 class="text-sm tracking-wider text-emerald-100 mb-3">{{ $t('footer.contactTitle') }}</h4>
-          <p class="text-emerald-100">{{ $t('footer.contact.phone') }}<br/>{{ $t('footer.contact.email') }}</p>
+          <div class="text-emerald-100 space-y-1">
+            <p><a v-if="configurations?.phone" :href="'tel:' + configurations.phone.replace(/[^+0-9]/g, '')" dir="ltr" class="inline-block hover:underline">{{ configurations.phone }}</a><span v-else>{{ $t('footer.contact.phone') }}</span></p>
+            <p><a v-if="configurations?.email" :href="'mailto:' + configurations.email" dir="ltr" class="inline-block break-all hover:underline">{{ configurations.email }}</a><span v-else>{{ $t('footer.contact.email') }}</span></p>
+          </div>
 
-          <div class="flex gap-3 mt-4">
-            <a :aria-label="$t('contact.socials.instagram')" href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white">IG</a>
-            <a :aria-label="$t('contact.socials.facebook')" href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white">F</a>
-            <a :aria-label="$t('contact.socials.linkedin')" href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white">in</a>
-            <a :aria-label="$t('contact.socials.tiktok')" href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white">t</a>
+          <div v-if="socials.length" class="flex flex-wrap gap-3 mt-4">
+            <a v-for="social in socials" :key="social.id" :href="social.href" target="_blank" rel="noopener noreferrer" :aria-label="socialLabel(social)" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white">
+              <component :is="social.icon" class="h-5 w-5" aria-hidden="true" />
+            </a>
           </div>
         </div>
       </div>
@@ -47,6 +49,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t, te } = useI18n()
+const { socials } = useSocialMedia()
+const { configurations } = useWebsiteConfigurations()
+function socialLabel(social) {
+  const key = 'contact.socials.' + social.key
+  return te(key) ? t(key) : social.title
+}
 const year = new Date().getFullYear()
 function scrollTop(){ window.scrollTo({ top:0, behavior:'smooth' }) }
 </script>
