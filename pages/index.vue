@@ -149,10 +149,9 @@ const highlights = computed(() => [
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Playfair+Display:wght@700;800&display=swap');
 
 .home-page {
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
   background: #ffffff;
   color: #1a252a;
 }
@@ -222,7 +221,7 @@ const highlights = computed(() => [
 .hero-title,
 .section-title,
 .cta-form h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
 }
 
 .hero-title {

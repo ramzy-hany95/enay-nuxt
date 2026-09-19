@@ -70,7 +70,7 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
 .services-hero h1,
 .faq-section h2 {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 4.2rem);
   line-height: 0.92;
   color: #131313;
@@ -117,7 +117,7 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
 .service-card__body h2 {
   margin: 0;
   color: #1b1b1b;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: 1.02rem;
   line-height: 1.2;
 }

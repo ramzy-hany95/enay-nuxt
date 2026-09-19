@@ -126,7 +126,7 @@ const socials = [
 
 .contact-hero__content h1 {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.2rem, 4vw, 3.6rem);
   font-weight: 700;
   color: #162026;

@@ -59,7 +59,6 @@ function onSubmit() {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Playfair+Display:wght@700;800&display=swap');
 
 .auth-page{
   min-height: calc(100vh - 80px);
@@ -79,7 +78,7 @@ function onSubmit() {
   text-align:center;
 }
 .logo{ width:120px; margin:0 auto 18px auto; display:block }
-.title{ font-family:'Playfair Display', serif; font-size:28px; margin:6px 0 8px; color:#153233 }
+.title{ font-family: var(--font-heading); font-size:28px; margin:6px 0 8px; color:#153233 }
 .subtitle{ color:#6b7b7b; margin-bottom:22px }
 
 .form{ display:flex; flex-direction:column; gap:14px; align-items:stretch }

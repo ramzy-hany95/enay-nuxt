@@ -136,7 +136,7 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
   position: relative;
   z-index: 1;
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
 }
 
 .service-details__hero h1 {
@@ -157,7 +157,7 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
   margin-bottom: 14px;
   color: #178073;
   font-size: 0.95rem;
-  font-family: Manrope, sans-serif;
+  font-family: var(--font-body);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }

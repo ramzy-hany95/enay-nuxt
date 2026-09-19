@@ -125,7 +125,7 @@ function closePopup() {
 
 .booking-card h1 {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.1rem, 4vw, 3.2rem);
   color: #171d24;
 }

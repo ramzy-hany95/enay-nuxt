@@ -6,7 +6,12 @@ module.exports = {
     './app.vue'
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['var(--font-body)'],
+        serif: ['var(--font-heading)'],
+      },
+    },
   },
   plugins: [],
 }

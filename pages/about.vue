@@ -143,7 +143,7 @@ const reasons = computed(() => {
 
 .about-hero__content h1 {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.2rem, 4vw, 3.8rem);
   font-weight: 700;
   color: #111111;
@@ -181,7 +181,7 @@ const reasons = computed(() => {
 .about-copy h2,
 .about-reasons h2 {
   margin: 0 0 16px;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: clamp(1.8rem, 3vw, 2.6rem);
   color: #111111;
 }

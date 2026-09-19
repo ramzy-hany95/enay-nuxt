@@ -2,7 +2,7 @@
   <header class="border-b bg-white">
     <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
       <NuxtLink to="/" class="flex items-center gap-2 text-teal-800 font-bold">
-        <img src="/assets/css/logo.png" :alt="$t('common.logoAlt')" /> 
+        <img src="/assets/css/logo.png" :alt="$t('common.logoAlt')" class="w-24 h-14" /> 
       </NuxtLink>
 
       <nav class="hidden md:flex gap-8 items-center">

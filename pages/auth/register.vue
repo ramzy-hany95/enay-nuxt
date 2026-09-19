@@ -68,12 +68,11 @@ function onSubmit() {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Playfair+Display:wght@700;800&display=swap');
 
 .auth-page{ display:flex; align-items:center; justify-content:center; padding:48px 16px }
 .auth-card{ width:100%; max-width:520px; background:#ffffff; padding:48px 36px; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.06); text-align:center }
 .logo{ width:120px; margin:0 auto 18px auto; display:block }
-.title{ font-family:'Playfair Display', serif; font-size:26px; margin:6px 0 8px; color:#153233 }
+.title{ font-family: var(--font-heading); font-size:26px; margin:6px 0 8px; color:#153233 }
 .subtitle{ color:#6b7b7b; margin-bottom:22px }
 
 .form{ display:flex; flex-direction:column; gap:14px }

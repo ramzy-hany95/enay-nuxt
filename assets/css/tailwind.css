@@ -2,4 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-/* You can add global styles below */
+@layer base {
+  :root {
+    --font-body: 'DM Sans', 'Almarai', sans-serif;
+    --font-heading: 'Playfair Display', 'Almarai', serif;
+  }
+
+  :lang(ar) {
+    --font-body: 'Almarai', sans-serif;
+    --font-heading: 'Almarai', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  button, input, select, textarea {
+    font-family: inherit;
+  }
+}

@@ -94,7 +94,7 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
 
 .blog-hero h1 {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 4vw, 4rem);
 }
 
@@ -172,7 +172,7 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
 
 .faq-section h2 {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 4vw, 3.6rem);
   line-height: 1.08;
 }

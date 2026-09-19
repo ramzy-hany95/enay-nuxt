@@ -83,7 +83,7 @@ const paragraphs = computed(() => post.value?.content?.split(/\r?\n\s*\r?\n/).fi
 
 .blog-details h1 {
   margin: 18px 0 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 3.8vw, 3.3rem);
   line-height: 1.15;
 }
