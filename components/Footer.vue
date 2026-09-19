@@ -83,5 +83,19 @@ footer h4{ color:rgba(255,255,255,0.9) }
   .footer-top{ flex-direction:column; align-items:flex-start }
   .footer-cta{ margin-left:0; margin-top:8px }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .footer-logo {
+    transform-origin: center;
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1), filter 400ms ease;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .footer-logo:hover {
+    transform: translateY(-5px) scale(1.06);
+    filter: drop-shadow(0 10px 14px rgb(110 231 183 / 30%));
+  }
+}
 </style>
 

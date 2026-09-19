@@ -163,6 +163,7 @@ const highlights = computed(() => [
 }
 
 .hero-section {
+  overflow: hidden;
   position: relative;
   min-height: 620px;
   display: flex;
