@@ -17,10 +17,9 @@
         <NuxtLink to="/auth/login" class="border border-gray-300 rounded-full px-3 py-1 text-sm">{{ $t('nav.signIn') }}</NuxtLink>
 
         <div>
-          <select v-model="currentLocale" @change="changeLocale" :aria-label="$t('nav.languageLabel')" class="text-sm border rounded px-2 py-1">
-            <option value="en">{{ $t('languages.en') }}</option>
-            <option value="ar">{{ $t('languages.ar') }}</option>
-          </select>
+          <button type="button" @click="changeLocale" :aria-label="$t('nav.languageLabel') + ': ' + $t('languages.' + nextLocale)" class="text-sm border rounded px-2 py-1">
+            {{ nextLocale.toUpperCase() }}
+          </button>
         </div>
       </div>
     </div>
@@ -28,15 +27,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n({ useScope: 'global' })
-const currentLocale = ref(locale.value)
+const nextLocale = computed(() => locale.value === 'en' ? 'ar' : 'en')
 
 function changeLocale() {
-  locale.value = currentLocale.value
-  if (process.client) localStorage.setItem('locale', currentLocale.value)
+  locale.value = nextLocale.value
+  if (process.client) localStorage.setItem('locale', locale.value)
 }
 </script>
 
