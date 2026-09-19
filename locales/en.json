@@ -6,6 +6,7 @@
     "empty": "No frequently asked questions available yet."
   },
   "nav": {
+    "menu": "Menu", "openMenu": "Open menu",
     "services": "Services",
     "blogs": "Blogs",
     "about": "About us",
