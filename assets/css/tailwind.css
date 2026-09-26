@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    --color-book-evaluation: #2A7E6C;
     --font-body: 'DM Sans', 'Almarai', sans-serif;
     --font-heading: 'Playfair Display', 'Almarai', serif;
   }

@@ -9,14 +9,14 @@
         <p class="hero-chip">{{ content?.hero_sub_description || $t('home.hero.chip') }}</p>
         <h1 class="hero-title">{{ content?.hero_title || $t('home.hero.title') }}</h1>
         <p class="hero-subtitle">{{ content?.hero_description || $t('home.hero.subtitle') }}</p>
-        <NuxtLink :to="homeButtonHref(content?.hero_button_href, '/book-evaluation')" class="hero-button">{{ content?.hero_button_text || $t('home.hero.cta') }}</NuxtLink>
+        <NuxtLink :to="homeButtonHref(content?.hero_button_href, '/book-evaluation')" class="hero-button booking-cta">{{ content?.hero_button_text || $t('home.hero.cta') }}</NuxtLink>
       </div>
     </section>
 
     <section class="technology-section py-20 md:py-24">
       <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-[1.05fr_1fr] lg:items-start">
         <div>
-          <h2 class="section-title mb-6">{{ content?.features_title || $t('home.tech.title') }}</h2>
+          <h3 class="section-title mb-6">{{ content?.features_title || $t('home.tech.title') }}</h3>
           <p class="section-text mb-10 max-w-xl">{{ content?.features_description || $t('home.tech.text') }}</p>
 
           <div v-if="features.length" class="feature-grid">
@@ -257,17 +257,26 @@ const highlights = computed(() => [
   min-height: 44px;
   padding: 0 22px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #2ac4b8, #1f9f97);
-  color: #f4f9f9;
+  background: var(--color-book-evaluation);
+  color: #ffffff;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   font-weight: 700;
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
+.hero-button.booking-cta {
+  background: var(--color-book-evaluation);
+  color: #ffffff;
+}
+
+.hero-button.booking-cta:hover {
+  box-shadow: 0 9px 24px rgb(42 126 108 / 35%);
+}
+
 .hero-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 9px 24px rgba(34, 181, 168, 0.35);
+  box-shadow: 0 9px 24px rgb(42 126 108 / 35%);
 }
 
 .technology-section {
@@ -560,7 +569,7 @@ const highlights = computed(() => [
   min-height: 46px;
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(90deg, #2ac4b8, #1f9f97);
+  background: var(--color-book-evaluation);
   color: white;
   font-weight: 700;
   letter-spacing: 0.03em;

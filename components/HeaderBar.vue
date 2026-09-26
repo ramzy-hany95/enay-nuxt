@@ -1,16 +1,16 @@
 <template>
-  <header class="border-b bg-white" :dir="locale === 'ar' ? 'rtl' : 'ltr'">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
-      <NuxtLink to="/" class="shrink-0 text-teal-800 font-bold">
+  <header class="border-b border-gray-100 bg-white" :dir="locale === 'ar' ? 'rtl' : 'ltr'">
+    <div class="max-w-6xl mx-auto flex min-h-[72px] items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:grid lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-8 lg:px-8">
+      <NuxtLink to="/" class="shrink-0 text-teal-800 font-bold lg:justify-self-start">
         <img :src="logoFailed ? '/assets/css/logo.png' : logoUrl" :alt="configurations?.clinic_name || $t('common.logoAlt')" @error="logoFailed = true" class="w-20 h-12 object-contain sm:w-24 sm:h-14" />
       </NuxtLink>
-      <nav class="hidden lg:flex gap-6 items-center">
-        <NuxtLink v-for="link in links" :key="link.to" :to="link.to" class="text-gray-800 text-sm hover:underline">{{ $t(link.label) }}</NuxtLink>
+      <nav class="hidden lg:flex items-center justify-center gap-6 xl:gap-8 whitespace-nowrap">
+        <NuxtLink v-for="link in links" :key="link.to" :to="link.to" class="inline-flex min-h-11 items-center text-sm font-medium text-gray-700 hover:text-teal-800" active-class="text-teal-800">{{ $t(link.label) }}</NuxtLink>
       </nav>
-      <div class="flex items-center gap-2 sm:gap-3">
-        <NuxtLink to="/book-evaluation" class="hidden lg:inline-flex bg-emerald-600 text-white rounded-full px-4 py-2 text-sm whitespace-nowrap">{{ $t('nav.bookEvaluation') }}</NuxtLink>
-        <NuxtLink to="/auth/login" class="hidden lg:inline-flex border border-gray-300 rounded-full px-3 py-2 text-sm whitespace-nowrap">{{ $t('nav.signIn') }}</NuxtLink>
-        <button type="button" @click="changeLocale" :aria-label="$t('nav.languageLabel') + ': ' + $t('languages.' + nextLocale)" class="min-h-11 min-w-11 text-sm border rounded-lg px-2 py-1 hover:bg-gray-50">{{ nextLocale.toUpperCase() }}</button>
+      <div class="flex shrink-0 items-center gap-2 sm:gap-3 lg:justify-self-end">
+        <NuxtLink to="/book-evaluation" class="hidden lg:inline-flex h-11 items-center justify-center bg-[var(--color-book-evaluation)] text-white rounded-full px-5 text-sm font-medium whitespace-nowrap">{{ $t('nav.bookEvaluation') }}</NuxtLink>
+        <NuxtLink to="/auth/login" class="hidden lg:inline-flex h-11 items-center justify-center border border-gray-300 rounded-full px-4 text-sm font-medium text-gray-700 whitespace-nowrap hover:bg-gray-50">{{ $t('nav.signIn') }}</NuxtLink>
+        <button type="button" @click="changeLocale" :aria-label="$t('nav.languageLabel') + ': ' + $t('languages.' + nextLocale)" class="inline-flex h-11 min-w-11 items-center justify-center border border-gray-300 rounded-full px-4 text-sm font-medium text-gray-700 whitespace-nowrap hover:bg-gray-50">{{ nextLocale.toUpperCase() }}</button>
         <button ref="menuButton" type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-gray-300 text-teal-800 hover:bg-gray-50 lg:hidden" :aria-label="$t('nav.openMenu')" aria-controls="mobile-menu" :aria-expanded="isMenuOpen" @click="openMenu">
           <svg aria-hidden="true" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
         </button>
@@ -25,10 +25,10 @@
           </button>
         </div>
         <nav class="flex flex-col gap-2">
-          <NuxtLink v-for="link in links" :key="link.to" :to="link.to" class="rounded-xl px-4 py-3 text-gray-800 hover:bg-emerald-50 hover:text-teal-800" active-class="bg-emerald-50 text-teal-800 font-semibold" @click="closeMenu">{{ $t(link.label) }}</NuxtLink>
+          <NuxtLink v-for="link in links" :key="link.to" :to="link.to" class="rounded-xl  text-gray-800 hover:bg-emerald-50 hover:text-teal-800" active-class="bg-emerald-50 text-teal-800 font-semibold" @click="closeMenu">{{ $t(link.label) }}</NuxtLink>
         </nav>
         <div class="mt-auto flex flex-col gap-3 pt-8">
-          <NuxtLink to="/book-evaluation" class="rounded-full bg-emerald-600 px-4 py-3 text-center text-sm text-white" @click="closeMenu">{{ $t('nav.bookEvaluation') }}</NuxtLink>
+          <NuxtLink to="/book-evaluation" class="rounded-full bg-[var(--color-book-evaluation)] px-4 py-3 text-center text-sm text-white" @click="closeMenu">{{ $t('nav.bookEvaluation') }}</NuxtLink>
           <NuxtLink to="/auth/login" class="rounded-full border border-gray-300 px-4 py-3 text-center text-sm" @click="closeMenu">{{ $t('nav.signIn') }}</NuxtLink>
           <button type="button" class="min-h-11 rounded-full border border-gray-300 px-4 py-3 text-sm hover:bg-gray-50" :aria-label="$t('nav.languageLabel') + ': ' + $t('languages.' + nextLocale)" @click="changeLocale">{{ nextLocale.toUpperCase() }}</button>
         </div>

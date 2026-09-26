@@ -205,13 +205,13 @@ function closePopup() {
 
 .btn--primary {
   border: 0;
-  background: #328978;
+  background: var(--color-book-evaluation);
   color: #ffffff;
   transition: background-color 180ms ease, transform 180ms ease;
 }
 
 .btn--primary:hover {
-  background: #2b7467;
+  background: var(--color-book-evaluation);
   transform: translateY(-1px);
 }
 

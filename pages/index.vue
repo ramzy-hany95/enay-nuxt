@@ -9,7 +9,7 @@
         <p class="hero-chip">{{ content?.hero_sub_description || $t('home.hero.chip') }}</p>
         <h1 class="hero-title">{{ content?.hero_title || $t('home.hero.title') }}</h1>
         <p class="hero-subtitle">{{ content?.hero_description || $t('home.hero.subtitle') }}</p>
-        <NuxtLink :to="homeButtonHref(content?.hero_button_href, '/book-evaluation')" class="hero-button">{{ content?.hero_button_text || $t('home.hero.cta') }}</NuxtLink>
+        <NuxtLink :to="homeButtonHref(content?.hero_button_href, '/book-evaluation')" class="hero-button booking-cta">{{ content?.hero_button_text || $t('home.hero.cta') }}</NuxtLink>
       </div>
     </section>
 
@@ -259,17 +259,26 @@ const highlights = computed(() => [
   min-height: 44px;
   padding: 0 22px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #2ac4b8, #1f9f97);
-  color: #f4f9f9;
+  background: var(--color-book-evaluation);
+  color: #ffffff;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   font-weight: 700;
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
+.hero-button.booking-cta {
+  background: var(--color-book-evaluation);
+  color: #ffffff;
+}
+
+.hero-button.booking-cta:hover {
+  box-shadow: 0 9px 24px rgb(42 126 108 / 35%);
+}
+
 .hero-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 9px 24px rgba(34, 181, 168, 0.35);
+  box-shadow: 0 9px 24px rgb(42 126 108 / 35%);
 }
 
 .technology-section {
@@ -281,7 +290,7 @@ const highlights = computed(() => [
 }
 
 .section-title {
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(1.4rem, 4vw, 2rem);
   line-height: 1.1;
 }
 
@@ -572,7 +581,7 @@ const highlights = computed(() => [
   min-height: 40px;
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(90deg, #2ac4b8, #1f9f97);
+  background: var(--color-book-evaluation);
   color: white;
   font-weight: 700;
   font-size: 0.74rem;

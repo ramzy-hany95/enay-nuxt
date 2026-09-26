@@ -1,5 +1,5 @@
 <template>
-  <footer class="relative overflow-hidden pt-12 pb-10 bg-gradient-to-b from-teal-800 to-teal-900 text-white">
+  <footer class="site-footer relative overflow-hidden pt-12 pb-10 text-white">
     <div class="max-w-6xl mx-auto px-4">
       <div class="footer-top">
         <img src="/assets/css/Rectangle.png" :alt="$t('common.logoAlt')" class="footer-logo" />
@@ -62,9 +62,17 @@ function scrollTop(){ window.scrollTo({ top:0, behavior:'smooth' }) }
 </script>
 
 <style scoped>
+.site-footer {
+  background-color: #134e4a;
+  background-image: url('~/assets/img/wrapper.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 .footer-top{ display:flex; align-items:center; justify-content:space-between; gap:18px; position:relative; padding:8px 0 }
 .footer-logo{ width:140px; height:auto }
-.footer-cta{ background:#ffffff; color:#0f6b60; padding:10px 18px; border-radius:999px; font-weight:700; text-decoration:none; box-shadow:0 6px 20px rgba(0,0,0,0.12) }
+.footer-cta{ background:var(--color-book-evaluation); color:#ffffff; padding:10px 18px; border-radius:999px; font-weight:700; text-decoration:none; box-shadow:0 6px 20px rgba(0,0,0,0.12) }
 
 /* full-width divider below the header row */
 .footer-divider{ width:100%; height:1px; background:rgba(255,255,255,0.25); margin:14px 0 }
