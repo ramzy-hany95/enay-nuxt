@@ -9,24 +9,24 @@
 
         <form class="booking-form" @submit.prevent="submitBooking">
           <div class="booking-grid booking-grid--two">
-            <input v-model="form.first_name" type="text" :placeholder="$t('booking.form.first_name')" required />
-            <input v-model="form.last_name" type="text" :placeholder="$t('booking.form.last_name')" required />
+            <label class="floating-field"><input v-model="form.first_name" type="text" placeholder=" " required /><span class="floating-field-label">{{ $t('contactForm.firstName') }}</span></label>
+            <label class="floating-field"><input v-model="form.last_name" type="text" placeholder=" " required /><span class="floating-field-label">{{ $t('contactForm.lastName') }}</span></label>
           </div>
 
           <div class="booking-grid booking-grid--phone">
-            <select v-model="form.country_code" aria-label="Country code">
+            <label class="floating-field floating-field--fixed"><select v-model="form.country_code" aria-label="Country code">
               <option value="+20">+20</option>
               <option value="+966">+966</option>
               <option value="+971">+971</option>
-            </select>
-            <input v-model="form.phone" type="tel" :placeholder="$t('booking.form.phone')" required />
+            </select><span class="floating-field-label">{{ $t('contactForm.countryCode') }}</span></label>
+            <label class="floating-field"><input v-model="form.phone" type="tel" placeholder=" " required /><span class="floating-field-label">{{ $t('booking.form.phone') }}</span></label>
           </div>
 
           <div class="date-field-wrap">
-            <input v-model="form.date" type="date" required />
+            <label class="floating-field floating-field--fixed"><input v-model="form.date" type="date" required /><span class="floating-field-label">{{ $t('contactForm.date') }}</span></label>
           </div>
 
-          <textarea v-model="form.message" rows="5" :placeholder="$t('booking.form.message')"></textarea>
+          <label class="floating-field"><textarea v-model="form.message" rows="5" placeholder=" "></textarea><span class="floating-field-label">{{ $t('booking.form.message') }}</span></label>
 
           <p v-if="failed" role="alert" class="text-red-700">{{ $t('contactForm.error') }}</p>
           <div class="booking-actions">

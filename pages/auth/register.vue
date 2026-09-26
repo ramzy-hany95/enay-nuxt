@@ -7,23 +7,23 @@
 
       <form @submit.prevent="onSubmit" class="form">
         <div class="name-row">
-          <input v-model="firstName" type="text" class="name-input" :placeholder="$t('auth.register.firstName')" required />
-          <input v-model="lastName" type="text" class="name-input" :placeholder="$t('auth.register.lastName')" required />
+          <label class="floating-field"><input v-model="firstName" type="text" class="name-input" placeholder=" " required /><span class="floating-field-label">{{ $t('auth.register.firstName') }}</span></label>
+          <label class="floating-field"><input v-model="lastName" type="text" class="name-input" placeholder=" " required /><span class="floating-field-label">{{ $t('auth.register.lastName') }}</span></label>
         </div>
 
         <div class="phone-row">
-          <select v-model="country" class="country-select">
+          <label class="floating-field floating-field--fixed country-select"><select v-model="country">
             <option value="+20">+20</option>
             <option value="+966">+966</option>
             <option value="+1">+1</option>
-          </select>
-          <input v-model="phone" type="tel" class="phone-input" :placeholder="$t('auth.register.phone')" required />
+          </select><span class="floating-field-label">{{ $t('contactForm.countryCode') }}</span></label>
+          <label class="floating-field"><input v-model="phone" type="tel" class="phone-input" placeholder=" " required /><span class="floating-field-label">{{ $t('auth.register.phone') }}</span></label>
         </div>
 
-        <input v-model="email" type="email" class="full-input" :placeholder="$t('auth.register.email')" />
+        <label class="floating-field"><input v-model="email" type="email" class="full-input" placeholder=" " /><span class="floating-field-label">{{ $t('auth.register.email') }}</span></label>
 
         <div class="password-row">
-          <input :type="show ? 'text' : 'password'" v-model="password" class="password-input" :placeholder="$t('auth.register.password')" required />
+          <label class="floating-field"><input :type="show ? 'text' : 'password'" v-model="password" class="password-input" placeholder=" " required /><span class="floating-field-label">{{ $t('auth.register.password') }}</span></label>
           <button type="button" class="eye-btn" @click="toggleShow" :aria-label="$t('auth.login.togglePassword')">
             <IconEye v-if="show" />
             <IconEyeOff v-else />
@@ -79,7 +79,7 @@ function onSubmit() {
 .name-row{ display:flex; gap:12px }
 .name-input{ flex:1; padding:12px; border-radius:8px; border:1px solid #e6ecec }
 .phone-row{ display:flex; gap:12px }
-.country-select{ width:100px; padding:12px; border-radius:8px; border:1px solid #e6ecec }
+.country-select{ width:100px; }
 .phone-input, .full-input{ padding:12px; border-radius:8px; border:1px solid #e6ecec }
 
 .password-row{ position:relative }
@@ -90,5 +90,5 @@ function onSubmit() {
 .primary-btn{ margin-top:6px; background:#2c8b71; color:white; border:0; padding:14px; border-radius:999px; font-weight:700 }
 .muted{ margin-top:8px; color:#4a5b5a }
 
-@media (max-width:520px){ .name-row{ flex-direction:column } .country-select{ width:86px } }
+@media (max-width:520px){ .name-row{ flex-direction:column } .country-select{ width:86px; } }
 </style>

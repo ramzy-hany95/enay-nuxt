@@ -64,7 +64,7 @@
       <div class="mx-auto max-w-6xl px-4 md:px-8">
         <div class="mb-8 flex items-end justify-between">
           <h2 class="section-title">{{ $t('home.articles.latest') }}</h2>
-          <NuxtLink to="/blogs" class="view-all">{{ $t('home.articles.viewAll') }}</NuxtLink>
+          <NuxtLink to="/blogs" class="view-all articles-view-all">{{ $t('home.articles.viewAll') }}<span aria-hidden="true" class="view-all-arrow">?</span></NuxtLink>
         </div>
 
         <p v-if="status === 'pending' || status === 'idle'" role="status">{{ $t('home.loading') }}</p>
@@ -73,20 +73,22 @@
           <button type="button" class="view-all" @click="refresh()">{{ $t('home.retry') }}</button>
         </div>
         <p v-else-if="!mainPost">{{ $t('blog.empty') }}</p>
-        <div v-else class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+        <div v-else class="articles-grid">
           <NuxtLink :to="`/blogs/${encodeURIComponent(mainPost.slug)}`" class="article-card article-card-large">
             <img :src="blogImage(mainPost.image)" :alt="mainPost.title" />
+            <span v-if="mainPost.category" class="article-tag article-tag-floating">{{ mainPost.category.name }}</span>
             <div class="article-overlay">
-              <span v-if="mainPost.category" class="article-tag">{{ mainPost.category.name }}</span>
               <p class="article-date">{{ blogDate(mainPost.published_at) }}</p>
               <h3>{{ mainPost.title }}</h3>
             </div>
           </NuxtLink>
-          <div class="space-y-5">
+          <div class="article-side-list">
             <NuxtLink v-for="post in sidePosts" :key="post.id" :to="`/blogs/${encodeURIComponent(post.slug)}`" class="article-mini">
-              <img :src="blogImage(post.image)" :alt="post.title" />
-              <div>
-                <span v-if="post.category" class="article-tag">{{ post.category.name }}</span>
+              <div class="article-mini-media">
+                <img :src="blogImage(post.image)" :alt="post.title" />
+                <span v-if="post.category" class="article-tag article-tag-floating">{{ post.category.name }}</span>
+              </div>
+              <div class="article-mini-content">
                 <p class="article-date">{{ blogDate(post.published_at) }}</p>
                 <h3>{{ post.title }}</h3>
               </div>
@@ -103,15 +105,15 @@
         <form class="cta-form" @submit.prevent="submitContact">
           <h3 class="py-3">{{ $t('home.contactCta.title') }}</h3>
           <div class="grid gap-4 md:grid-cols-2">
-            <input type="text" v-model="contactForm.first_name" :aria-label="$t('contactForm.firstName')" :placeholder="$t('home.contactCta.firstName')" required />
-            <input type="text" v-model="contactForm.last_name" :aria-label="$t('contactForm.lastName')" :placeholder="$t('home.contactCta.lastName')" required />
+            <label class="floating-field"><input type="text" v-model="contactForm.first_name" :aria-label="$t('contactForm.firstName')" placeholder=" " required /><span class="floating-field-label">{{ $t('home.contactCta.firstName') }}</span></label>
+            <label class="floating-field"><input type="text" v-model="contactForm.last_name" :aria-label="$t('contactForm.lastName')" placeholder=" " required /><span class="floating-field-label">{{ $t('home.contactCta.lastName') }}</span></label>
           </div>
           <div class="mt-3 grid gap-4 md:grid-cols-[90px_1fr]">
-            <input type="text" v-model="contactForm.country_code" :aria-label="$t('contactForm.countryCode')" :placeholder="$t('home.contactCta.countryCode')" required />
-            <input type="tel" v-model="contactForm.phone" :aria-label="$t('contactForm.phone')" :placeholder="$t('home.contactCta.phone')" required />
+            <label class="floating-field"><input type="text" v-model="contactForm.country_code" :aria-label="$t('contactForm.countryCode')" placeholder=" " required /><span class="floating-field-label">{{ $t('home.contactCta.countryCode') }}</span></label>
+            <label class="floating-field"><input type="tel" v-model="contactForm.phone" :aria-label="$t('contactForm.phone')" placeholder=" " required /><span class="floating-field-label">{{ $t('home.contactCta.phone') }}</span></label>
           </div>
-          <label class="mt-3 block text-sm">{{ $t('contactForm.date') }}<input v-model="contactForm.date" type="date" required /></label>
-          <textarea rows="4" v-model="contactForm.message" :aria-label="$t('contactForm.message')" :placeholder="$t('home.contactCta.message')"></textarea>
+          <label class="floating-field floating-field--fixed mt-3"><input v-model="contactForm.date" type="date" required /><span class="floating-field-label">{{ $t('contactForm.date') }}</span></label>
+          <label class="floating-field mt-3"><textarea rows="4" v-model="contactForm.message" :aria-label="$t('contactForm.message')" placeholder=" "></textarea><span class="floating-field-label">{{ $t('home.contactCta.message') }}</span></label>
           <button type="submit" :disabled="sending" :aria-busy="sending" class="disabled:opacity-60 disabled:cursor-wait">{{ sending ? $t('contactForm.sending') : $t('home.contactCta.submit') }}</button>
           <p v-if="sent" role="status" class="mt-3 rounded bg-white p-3 text-sm text-emerald-800">{{ $t('contactForm.success') }}</p>
           <p v-if="failed" role="alert" class="mt-3 rounded bg-white p-3 text-sm text-red-700">{{ $t('contactForm.error') }}</p>
@@ -329,8 +331,8 @@ const highlights = computed(() => [
 
 .feature-item .feature-icon {
   box-sizing: content-box;
-  padding: 12px;
-  border-radius: 16px;
+  padding: 10px;
+  border-radius: 14px;
   transition: color 240ms ease, background-color 240ms ease;
 }
 
@@ -346,12 +348,6 @@ const highlights = computed(() => [
 
   .feature-item:hover::before {
     transform: scaleY(1);
-  }
-
-  .feature-item:hover .feature-icon {
-    color: #008577;
-    background-color: #d4e6e4;
-    filter: none;
   }
 
   .feature-item:hover h3 {
@@ -376,17 +372,20 @@ const highlights = computed(() => [
 .feature-icon,
 .highlight-icon {
   display: inline-flex;
-  width: 28px;
-  height: 28px;
-  color: #5ef0e2;
+  width: 24px;
+  height: 24px;
+  box-sizing: content-box;
+  padding: 10px;
+  border-radius: 14px;
+  color: #0D7377;
+  background-color: rgb(13 115 119 / 10%);
   stroke-width: 2;
-  filter: drop-shadow(0 0 10px rgba(56, 216, 204, 0.14));
 }
 
 .feature-icon svg,
 .highlight-icon svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   stroke: currentColor;
   fill: none;
   display: block;
@@ -428,7 +427,7 @@ const highlights = computed(() => [
 
 .highlight-list li {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 44px 1fr;
   gap: 13px;
   align-items: center;
   color: #4f6067;
@@ -444,86 +443,110 @@ const highlights = computed(() => [
   color: #243137;
 }
 
+.articles-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+:global([dir='rtl']) .view-all-arrow { transform: rotate(180deg); }
+.articles-grid {
+  display: grid;
+  gap: 24px;
+}
 .article-card,
 .article-mini {
-  border-radius: 12px;
-  overflow: hidden;
+  min-width: 0;
   position: relative;
 }
-
 .article-card-large {
+  display: block;
   min-height: 430px;
+  overflow: hidden;
+  border-radius: 6px;
 }
-
 .article-card-large > img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .article-overlay {
   position: absolute;
   inset: auto 0 0;
-  padding: 22px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0));
+  padding: 80px 20px 28px;
+  background: linear-gradient(to top, rgb(0 0 0 / 90%), transparent);
 }
-
 .article-tag {
-  color: #7cbaff;
+  color: #2585ff;
   font-size: 0.76rem;
   font-weight: 700;
 }
-
 .article-tag-floating {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 2;
-  background: #0367d8;
-  color: #dcecff;
-  border: 1px solid rgba(154, 198, 255, 0.45);
-  border-radius: 999px;
+  top: 12px;
+  inset-inline-start: 12px;
+  z-index: 1;
+  max-width: calc(100% - 24px);
+  background: rgb(230 244 255 / 90%);
+  border: 1px solid #d4eafb;
+  border-radius: 10px;
   padding: 6px 10px;
 }
-
+.article-card-large > .article-tag-floating {
+  top: 20px;
+  inset-inline-start: 20px;
+}
 .article-date {
-  margin-top: 10px;
+  margin: 0;
   color: #d3d9dd;
   font-size: 0.72rem;
   letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
-
 .article-overlay h3 {
   margin-top: 8px;
   font-size: 1.6rem;
   line-height: 1.2;
-  max-width: 24ch;
   color: #ffffff;
 }
-
+.article-side-list {
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: 24px;
+}
 .article-mini {
   display: grid;
-  grid-template-columns: 150px 1fr;
-  background: #ffffff;
-  border: 1px solid #dbe6e8;
+  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+  gap: 16px;
+  align-items: start;
 }
-
+.article-mini-media {
+  position: relative;
+  align-self: stretch;
+  min-height: 200px;
+  overflow: hidden;
+  border-radius: 6px;
+}
 .article-mini img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  min-height: 170px;
 }
-
-.article-mini > div {
-  padding: 18px 18px 14px;
-}
-
+.article-mini-content { min-width: 0; }
+.article-mini .article-date { color: #737373; }
 .article-mini h3 {
   margin-top: 10px;
   font-size: 1.15rem;
   line-height: 1.3;
   color: #233238;
+  font-weight: 700;
+}
+@media (min-width: 1024px) {
+  .articles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .article-card-large { min-height: 460px; }
 }
 
 .contact-cta {
@@ -626,7 +649,7 @@ const highlights = computed(() => [
     grid-template-columns: 1fr;
   }
 
-  .article-mini img {
+  .article-mini-media {
     min-height: 220px;
   }
 

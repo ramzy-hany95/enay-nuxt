@@ -7,16 +7,16 @@
 
       <form @submit.prevent="onSubmit" class="form">
         <div class="phone-row">
-          <select v-model="country" class="country-select" aria-label="country code">
+          <label class="floating-field floating-field--fixed country-select"><select v-model="country" aria-label="country code">
             <option value="+20">+20</option>
             <option value="+966">+966</option>
             <option value="+1">+1</option>
-          </select>
-          <input v-model="phone" type="tel" class="phone-input" :placeholder="$t('auth.login.phonePlaceholder')" required />
+          </select><span class="floating-field-label">{{ $t('contactForm.countryCode') }}</span></label>
+          <label class="floating-field"><input v-model="phone" type="tel" class="phone-input" placeholder=" " required /><span class="floating-field-label">{{ $t('auth.login.phonePlaceholder') }}</span></label>
         </div>
 
         <div class="password-row">
-          <input :type="show ? 'text' : 'password'" v-model="password" class="password-input" :placeholder="$t('auth.login.passwordPlaceholder')" required />
+          <label class="floating-field"><input :type="show ? 'text' : 'password'" v-model="password" class="password-input" placeholder=" " required /><span class="floating-field-label">{{ $t('auth.login.passwordPlaceholder') }}</span></label>
           <button type="button" class="eye-btn" @click="toggleShow" :aria-label="$t('auth.login.togglePassword')">
             <IconEye v-if="show" />
             <IconEyeOff v-else />
@@ -83,7 +83,7 @@ function onSubmit() {
 
 .form{ display:flex; flex-direction:column; gap:14px; align-items:stretch }
 .phone-row{ display:flex; gap:12px }
-.country-select{ width:100px; padding:12px; border-radius:8px; border:1px solid #e6ecec; background:#fbfdfc }
+.country-select{ width:100px; }
 .phone-input{ flex:1; padding:12px; border-radius:8px; border:1px solid #e6ecec }
 
 .password-row{ position:relative }
@@ -97,6 +97,6 @@ function onSubmit() {
 
 @media (max-width:520px){
   .auth-card{ padding:28px 18px }
-  .country-select{ width:86px }
+  .country-select{ width:86px; }
 }
 </style>
