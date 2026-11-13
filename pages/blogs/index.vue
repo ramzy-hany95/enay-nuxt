@@ -17,13 +17,10 @@
       <p v-else-if="!posts.length">{{ $t('blog.empty') }}</p>
       <div v-else class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         <NuxtLink v-for="post in posts" :key="post.id" :to="`/blogs/${encodeURIComponent(post.slug)}`" class="blog-card">
-          <img :src="blogImage(post.image)" :alt="post.title" class="blog-card__image" />
+          <img :src="blogImage(post.image)" :alt="post.title" class="blog-card__image" loading="lazy" />
           <div class="blog-card__body">
-            <span v-if="post.category" class="blog-card__tag">{{ post.category?.name }}</span>
-            <p class="blog-card__date">{{ blogDate(post.published_at) }}</p>
             <h2>{{ post.title }}</h2>
-            <p class="blog-card__excerpt">{{ post.description }}</p>
-            <span class="blog-card__link">{{ $t('common.readArticle') }}</span>
+            <p class="blog-card__slug"><bdi>{{ post.slug }}</bdi></p>
           </div>
         </NuxtLink>
       </div>
@@ -65,7 +62,7 @@ import { useI18n } from 'vue-i18n'
 const { locale } = useI18n({ useScope: 'global' })
 import { getPublicBlogs } from '~/services/blogs'
 
-const { blogImage, blogDate } = useBlogPresentation()
+const { blogImage } = useBlogPresentation()
 const page = ref(1)
 const { data: blogPage, status, error, refresh } = await useAsyncData(
   () => 'public-blogs-' + locale.value + '-' + page.value,
@@ -132,33 +129,17 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
   padding: 18px;
 }
 
-.blog-card__tag {
-  display: inline-flex;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #e8f4f2;
-  color: #157468;
-  font-size: 0.78rem;
-  font-weight: 800;
-}
-
-.blog-card__date {
-  margin: 12px 0 0;
-  color: #7c8c91;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-}
-
 .blog-card h2 {
-  margin: 10px 0 0;
+  margin: 0;
   font-size: 1.25rem;
   line-height: 1.35;
 }
 
-.blog-card__excerpt {
+.blog-card__slug {
   margin: 12px 0 0;
   color: #5c6d73;
   line-height: 1.65;
+  overflow-wrap: anywhere;
 }
 
 .blog-card__link {

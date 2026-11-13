@@ -1,11 +1,15 @@
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getWebsiteHome } from '~/services/home'
 
 export function useWebsiteHome() {
   const { locale } = useI18n({ useScope: 'global' })
-  const key = computed(() => 'website-home-' + locale.value)
-  return useAsyncData(key, () => getWebsiteHome(locale.value), { server: false })
+  // Refresh the same data entry so the current layout stays visible while
+  // the next language is loading. Nuxt cancels superseded refreshes.
+  return useAsyncData('website-home', () => getWebsiteHome(locale.value), {
+    server: false,
+    watch: [locale],
+    dedupe: 'cancel'
+  })
 }
 
 export function homeButtonHref(value: string | undefined, fallback: string) {

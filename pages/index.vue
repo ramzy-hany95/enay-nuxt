@@ -67,13 +67,13 @@
           <NuxtLink to="/blogs" class="view-all articles-view-all">{{ $t('home.articles.viewAll') }}<span aria-hidden="true" class="view-all-arrow">?</span></NuxtLink>
         </div>
 
-        <p v-if="status === 'pending' || status === 'idle'" role="status">{{ $t('home.loading') }}</p>
-        <div v-else-if="error" role="alert">
+        <p v-if="!home && (status === 'pending' || status === 'idle')" role="status">{{ $t('home.loading') }}</p>
+        <div v-else-if="!home && error" role="alert">
           <p>{{ $t('home.loadError') }}</p>
           <button type="button" class="view-all" @click="refresh()">{{ $t('home.retry') }}</button>
         </div>
         <p v-else-if="!mainPost">{{ $t('blog.empty') }}</p>
-        <div v-else class="articles-grid">
+        <div v-else class="articles-grid" :aria-busy="status === 'pending'">
           <NuxtLink :to="`/blogs/${encodeURIComponent(mainPost.slug)}`" class="article-card article-card-large">
             <img :src="blogImage(mainPost.image)" :alt="mainPost.title" />
             <span v-if="mainPost.category" class="article-tag article-tag-floating">{{ mainPost.category.name }}</span>
@@ -448,7 +448,7 @@ const highlights = computed(() => [
   align-items: center;
   gap: 10px;
 }
-:global([dir='rtl']) .view-all-arrow { transform: rotate(180deg); }
+:global([dir='rtl'] .view-all-arrow) { transform: rotate(180deg); }
 .articles-grid {
   display: grid;
   gap: 24px;

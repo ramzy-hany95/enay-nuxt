@@ -23,8 +23,11 @@
         <NuxtLink v-for="service in services" :key="service.id" :to="`/services/${encodeURIComponent(service.slug)}`" class="service-card">
           <div class="service-card__media"><img :src="service.imageUrl" :alt="service.title" class="service-card__image" loading="lazy" @error="onImageError" /></div>
           <div class="service-card__body">
+            <div class="service-card__text">
             <h2>{{ service.title }}</h2>
-            <p>{{ descriptionPreview(service.description) }}</p>
+            <p>{{ service.smallDescription }}</p>
+            </div>
+            <span class="service-card__read-more">{{ $t('services.readMore') }}<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></span>
           </div>
         </NuxtLink>
       </div>
@@ -64,13 +67,11 @@ const services = computed(() => {
   return items.length ? items : localServices.value
 })
 
-function descriptionPreview(description: string) {
-  const words = description.trim().split(/\s+/).filter(Boolean)
-  return words.length > 20 ? words.slice(0, 20).join(' ') + '...' : description
-}
-
 function onImageError(event: Event) {
   const image = event.target as HTMLImageElement
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.controller?.postMessage({ type: 'service-image-error', url: image.src })
+  }
   image.onerror = null
   if (image.getAttribute('src') !== fallbackImage) image.src = fallbackImage
 }
@@ -130,7 +131,32 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
 }
 
 .service-card__body {
+  position: relative;
   transition: background-color 300ms ease;
+}
+
+.service-card__text { transition: transform 300ms ease; }
+.service-card__read-more {
+  position: absolute;
+  inset-inline: 14px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #157468;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+.service-card__read-more svg { width: 20px; height: 20px; }
+:global([dir='rtl'] .service-card__read-more svg) { transform: rotate(180deg); }
+
+@media (hover: hover) and (pointer: fine) {
+  .service-card__read-more { opacity: 0; transform: translateY(10px); }
+  .service-card:hover .service-card__text,
+  .service-card:focus-visible .service-card__text { transform: translateY(-10px); }
+  .service-card:hover .service-card__read-more,
+  .service-card:focus-visible .service-card__read-more { opacity: 1; transform: translateY(0); }
 }
 
 .service-card__body h2 {
@@ -161,6 +187,8 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
   .service-card,
   .service-card__image,
   .service-card__body,
+  .service-card__text,
+  .service-card__read-more,
   .service-card__body h2 {
     transition: none;
   }
@@ -179,7 +207,7 @@ const { data: faqItems, status: faqStatus, error: faqError, refresh: refreshFaqs
 }
 
 .service-card__body {
-  padding: 18px 14px 22px;
+  padding: 24px 14px 60px;
 }
 
 .service-card__body h2 {

@@ -21,6 +21,7 @@ export function useLocalServices() {
       slug: item.id,
       title: translated('title', arabic ? arabicTitles[index] : item.title),
       description: translated('shortDescription', arabic ? arabicDescriptions[index] : item.shortDescription),
+      smallDescription: translated('shortDescription', arabic ? arabicDescriptions[index] : item.shortDescription),
       imageUrl: images['/assets/img/' + item.image],
       overview: list('overview', arabic ? [] : item.overview),
       audience: list('audience', arabic ? [] : item.audience),

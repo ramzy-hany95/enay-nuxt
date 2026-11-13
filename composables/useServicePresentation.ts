@@ -22,6 +22,7 @@ export function useServicePresentation() {
       id: String(item.id ?? item.slug ?? ''),
       slug: text(item.slug),
       title: text(item.title),
+      smallDescription: text(item.small_description ?? item.short_description ?? item.shortDescription),
       description: text(item.short_description ?? item.shortDescription ?? item.description),
       imageUrl: imageUrl(item.image ?? item.banner),
       overview: lines(item.overview ?? item.content ?? item.description),

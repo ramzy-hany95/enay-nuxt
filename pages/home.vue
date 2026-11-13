@@ -69,13 +69,13 @@
           <NuxtLink to="/blogs" class="view-all">{{ $t('home.articles.viewAll') }}</NuxtLink>
         </div>
 
-        <p v-if="status === 'pending' || status === 'idle'" role="status">{{ $t('home.loading') }}</p>
-        <div v-else-if="error" role="alert">
+        <p v-if="!home && (status === 'pending' || status === 'idle')" role="status">{{ $t('home.loading') }}</p>
+        <div v-else-if="!home && error" role="alert">
           <p>{{ $t('home.loadError') }}</p>
           <button type="button" class="view-all" @click="refresh()">{{ $t('home.retry') }}</button>
         </div>
         <p v-else-if="!mainPost">{{ $t('blog.empty') }}</p>
-        <div v-else class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+        <div v-else class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]" :aria-busy="status === 'pending'">
           <NuxtLink :to="`/blogs/${encodeURIComponent(mainPost.slug)}`" class="article-card article-card-large">
             <img :src="blogImage(mainPost.image)" :alt="mainPost.title" />
             <div class="article-overlay">
@@ -528,7 +528,7 @@ const highlights = computed(() => [
 .cta-form {
   position: relative;
   z-index: 1;
-  margin-left: auto;
+  margin-inline-start: auto;
   width: min(100%, 540px);
   background: rgba(252, 252, 252, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.82);

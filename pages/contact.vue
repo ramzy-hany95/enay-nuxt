@@ -20,7 +20,10 @@
             <component :is="item.icon" class="contact-info__icon" aria-hidden="true" />
             <div>
               <p class="contact-info__label">{{ item.label }}</p>
-              <p class="contact-info__value">{{ item.value }}</p>
+              <p class="contact-info__value">
+                <a v-if="item.href" :href="item.href" :dir="item.external ? undefined : 'ltr'" :target="item.external ? '_blank' : undefined" :rel="item.external ? 'noopener noreferrer' : undefined" class="contact-info__link">{{ item.value }}</a>
+                <span v-else>{{ item.value }}</span>
+              </p>
             </div>
           </div>
         </div>
@@ -62,13 +65,21 @@ const { t, te } = useI18n()
 
 const { configurations, mapUrl } = useWebsiteConfigurations()
 
-const infoItems = computed(() => [
-  { label: t('contact.labels.address'), value: configurations.value?.address || t('contact.info.address'), icon: IconMapPin },
-  { label: t('contact.labels.phone'), value: configurations.value?.phone || t('contact.info.phone'), icon: IconPhone },
-  ...(configurations.value?.phone_second ? [{ label: t('contact.labels.phone') + ' 2', value: configurations.value.phone_second, icon: IconPhone }] : []),
-  { label: t('contact.labels.email'), value: configurations.value?.email || t('contact.info.email'), icon: IconMail },
+const infoItems = computed(() => {
+  const locationUrl = new URL(mapUrl.value)
+  locationUrl.searchParams.delete('output')
+  const phone = configurations.value?.phone || t('contact.info.phone')
+  const secondPhone = configurations.value?.phone_second
+  const email = (configurations.value?.email || t('contact.info.email')).trim()
+  const phoneHref = value => 'tel:' + value.replace(/[^+0-9]/g, '')
+  return [
+  { label: t('contact.labels.address'), value: configurations.value?.address || t('contact.info.address'), href: locationUrl.href, external: true, icon: IconMapPin },
+  { label: t('contact.labels.phone'), value: phone, href: phoneHref(phone), icon: IconPhone },
+  ...(secondPhone ? [{ label: t('contact.labels.phone') + ' 2', value: secondPhone, href: phoneHref(secondPhone), icon: IconPhone }] : []),
+  { label: t('contact.labels.email'), value: email, href: 'mailto:' + email, icon: IconMail },
   { label: t('contact.labels.hours'), value: t('contact.info.hours'), icon: IconClock }
-])
+  ]
+})
 
 const { socials } = useSocialMedia()
 function socialLabel(social) {
@@ -166,6 +177,17 @@ function socialLabel(social) {
   color: #4f5d64;
   font-size: 1rem;
   line-height: 1.45;
+}
+
+.contact-info__link {
+  display: inline-block;
+  overflow-wrap: anywhere;
+}
+
+.contact-info__link:hover,
+.contact-info__link:focus-visible {
+  color: #1b7f70;
+  text-decoration: underline;
 }
 
 .contact-map {
