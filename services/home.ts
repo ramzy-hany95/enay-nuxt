@@ -4,6 +4,14 @@ import type { PublicBlog } from '~/services/blogs'
 export interface WebsiteHomeContent {
   id: number
   hero_banner: string | null
+  hero_banner_2?: string | null
+  hero_banner_3?: string | null
+  review_image_1?: string | null
+  review_image_2?: string | null
+  review_image_3?: string | null
+  review_image_4?: string | null
+  review_image_5?: string | null
+  review_image_6?: string | null
   hero_title: string
   hero_description: string
   hero_sub_description: string

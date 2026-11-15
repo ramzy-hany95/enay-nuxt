@@ -41,6 +41,8 @@
     "ar": "العربية"
   },
   "home": {
+    "slider": {"previous":"Previous image","next":"Next image","slide":"Show image {number}","pause":"Pause slideshow","play":"Play slideshow"},
+    "reviews": {"title":"Reviews","image":"Customer review {number}"},
     "loading": "Loading homepage?",
     "loadError": "Unable to load homepage content. Please try again.",
     "retry": "Try again",

@@ -1,7 +1,7 @@
 <template>
   <div class="home-page bg-black text-white">
     <section class="hero-section">
-      <div class="hero-image" :style="{ backgroundImage: `url(${heroImage})` }"></div>
+      <HomeHeroSlider :images="heroImages" />
       <div class="hero-overlay"></div>
       <div class="hero-bottom-fade"></div>
 
@@ -12,6 +12,8 @@
         <NuxtLink :to="homeButtonHref(content?.hero_button_href, '/book-evaluation')" class="hero-button booking-cta">{{ content?.hero_button_text || $t('home.hero.cta') }}</NuxtLink>
       </div>
     </section>
+
+    <HomeReviews :images="reviewImages" />
 
     <section class="technology-section py-20 md:py-24">
       <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 md:px-8 lg:grid-cols-[1.05fr_1fr] lg:items-start">
@@ -138,7 +140,15 @@ const { blogImage, blogDate } = useBlogPresentation()
 const imageRoutes = { tech: techImg, kingdom: kingdomImg, cta: ctaImg }
 const { data: home, status, error, refresh } = await useWebsiteHome()
 const content = computed(() => home.value?.content)
-const heroImage = computed(() => content.value?.hero_banner ? blogImage(content.value.hero_banner) : heroImg)
+const heroImages = computed(() => {
+  const banners = [content.value?.hero_banner, content.value?.hero_banner_2, content.value?.hero_banner_3]
+    .filter((path): path is string => !!path?.trim())
+    .map(path => blogImage(path))
+  return banners.length ? [...new Set(banners)] : [heroImg]
+})
+const reviewImages = computed(() => Array.from({ length: 6 }, (_, index) =>
+  content.value?.[`review_image_${index + 1}` as `review_image_${1 | 2 | 3 | 4 | 5 | 6}`]
+).filter((path): path is string => !!path?.trim()).map(path => blogImage(path)))
 const features = computed(() => home.value?.features?.filter(feature => feature.title) || [])
 const mainPost = computed(() => home.value?.latest_blogs?.[0])
 const sidePosts = computed(() => home.value?.latest_blogs?.slice(1) || [])
@@ -189,6 +199,8 @@ const highlights = computed(() => [
   inset: 0;
   background: linear-gradient(102deg, rgba(6, 36, 39, 0.76) 0%, rgba(9, 21, 28, 0.42) 47%, rgba(7, 7, 7, 0.58) 100%);
 }
+
+.hero-overlay, .hero-bottom-fade { pointer-events: none; }
 
 .hero-bottom-fade {
   position: absolute;
