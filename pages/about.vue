@@ -1,7 +1,7 @@
 <template>
   <div class="about-page">
     <section class="about-hero">
-      <div class="about-hero__image" :style="{ backgroundImage: `url(${heroImage})` }"></div>
+      <div v-if="heroImage" class="about-hero__image" :style="{ backgroundImage: `url(${heroImage})` }"></div>
       <div class="about-hero__overlay"></div>
       <div class="about-hero__fade"></div>
 
@@ -51,7 +51,6 @@
 </template>
 
 <script setup lang="ts">
-import heroImage from '../assets/img/photo.png'
 import storyImageStatic from '../assets/img/Container.png'
 import galleryTopLeftStatic from '../assets/img/Image.png'
 import galleryTopRightStatic from '../assets/img/Image1.png'
@@ -66,13 +65,14 @@ const apiBase = useRuntimeConfig().public.apiBaseUrl.replace(/\/+$/, '')
 const { data: aboutData } = await useAsyncData(() => 'websiteAbout-' + locale.value, () => getWebsiteAbout(locale.value), { server: false })
 const about = computed(() => aboutData.value?.data)
 
-function imageUrl(path: string | undefined, fallback: string) {
+function imageUrl(path: string | null | undefined, fallback: string) {
   if (!path?.trim()) return fallback
   if (/^https?:\/\//i.test(path)) return path
   const relativePath = path.replace(/^\/+/, '')
   return `${apiBase}/${relativePath.startsWith('storage/') ? relativePath : `storage/${relativePath}`}`
 }
 
+const heroImage = computed(() => imageUrl(about.value?.description_background_image, ''))
 const storyImage = computed(() => imageUrl(about.value?.section_one_images?.[0], storyImageStatic))
 const galleryTopLeft = computed(() => imageUrl(about.value?.section_two_image_one, galleryTopLeftStatic))
 const galleryTopRight = computed(() => imageUrl(about.value?.section_two_image_two, galleryTopRightStatic))
